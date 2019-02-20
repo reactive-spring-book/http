@@ -28,9 +28,11 @@ class CustomerRestController {
 	}
 
 	@PostMapping
-	Mono<ResponseEntity<?>> create(@RequestBody Publisher<Customer> customer) {
-		return this.customerRepository.save(customer).map(body -> ResponseEntity
-				.created(URI.create("/rc/customers/" + body.getId())).build());
+	Mono<ResponseEntity<?>> create(@RequestBody Customer customer) {
+		return this.customerRepository.save(Mono.just(customer)) //
+				.map(body -> ResponseEntity //
+						.created(URI.create("/rc/customers/" + body.getId())) //
+						.build());
 	}
 
 }

@@ -2,12 +2,16 @@ package http;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.util.Collection;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -19,15 +23,15 @@ public class CustomerRepositoryTest {
 	@Test
 	public void findAll() {
 
+		Collection<String> names = customerRepository.names();
 		StepVerifier.create(this.customerRepository.findAll())
-				.expectNextCount(customerRepository.names.size()).verifyComplete();
+				.expectNextCount(names.size()).verifyComplete();
 
 		StepVerifier.FirstStep<Customer> customerFirstStep = StepVerifier //
 				.create(this.customerRepository.findAll());
 
-		for (int i = 0; i < this.customerRepository.names.size(); i++)
-			customerFirstStep.expectNextMatches(
-					c -> this.customerRepository.names.contains(c.getName()));
+		for (int i = 0; i < names.size(); i++)
+			customerFirstStep.expectNextMatches(c -> names.contains(c.getName()));
 
 		customerFirstStep.verifyComplete();
 	}
@@ -50,6 +54,20 @@ public class CustomerRepositoryTest {
 
 	@Test
 	public void save() {
+
+		String name = "Kimly";
+		Publisher<Customer> kimly = this.customerRepository
+				.save(Mono.just(new Customer(name)));
+
+		StepVerifier //
+				.create(kimly) //
+				.expectNextMatches(customer -> StringUtils.hasText(customer.getId())) //
+				.verifyComplete();
+
+		StepVerifier //
+				.create(this.customerRepository.findAll()
+						.filter(c -> c.getName().equals(name))) //
+				.expectNextCount(1).verifyComplete();
 
 	}
 

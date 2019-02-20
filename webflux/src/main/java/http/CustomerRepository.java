@@ -5,21 +5,27 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 class CustomerRepository {
 
 	private final Map<String, Customer> customers = new ConcurrentHashMap<>();
 
-	// for testing
-	final Collection<String> names = new ConcurrentSkipListSet<>(
-			Arrays.asList("Jane", "Huiren", "Tasha", "Billy"));
+	Collection<String> names() {
+		return customers.values().stream().map(Customer::getName)
+				.collect(Collectors.toSet());
+	}
 
 	CustomerRepository() {
-		this.names.stream().map(name -> new Customer(UUID.randomUUID().toString(), name))
+		Stream.of("Jane", "Huiren", "Tasha", "Billy")
+				.map(name -> new Customer(UUID.randomUUID().toString(), name))
 				.forEach(c -> this.customers.put(c.getId(), c));
 	}
 

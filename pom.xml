@@ -19,6 +19,7 @@
     </modules>
     <dependencies>
         <dependency>
+            <optional>true</optional>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>

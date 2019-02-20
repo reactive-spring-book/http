@@ -24,4 +24,8 @@ class Customer {
 		this.name = name;
 	}
 
+	Customer(String name) {
+		this.name = name;
+	}
+
 }
