@@ -68,7 +68,6 @@ public class CustomerRepositoryTest {
 				.create(this.customerRepository.findAll()
 						.filter(c -> c.getName().equals(name))) //
 				.expectNextCount(1).verifyComplete();
-
 	}
 
 }
