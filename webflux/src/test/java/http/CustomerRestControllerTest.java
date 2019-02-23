@@ -13,5 +13,4 @@ public class CustomerRestControllerTest extends AbstractRestBaseClass {
 		return "/rc";
 	}
 
-
 }
