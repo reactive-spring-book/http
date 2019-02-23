@@ -3,6 +3,7 @@ package http;
 import org.reactivestreams.Publisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -18,12 +19,12 @@ class CustomerRestController {
 	}
 
 	@GetMapping("/{id}")
-	Publisher<Customer> byId(@PathVariable String id) {
+	Mono<Customer> byId(@PathVariable String id) {
 		return this.customerRepository.findById(id);
 	}
 
 	@GetMapping
-	Publisher<Customer> all() {
+	Flux<Customer> all() {
 		return this.customerRepository.findAll();
 	}
 

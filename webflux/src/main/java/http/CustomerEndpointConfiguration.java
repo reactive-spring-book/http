@@ -3,12 +3,17 @@ package http;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.server.*;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerRequest;
+import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
@@ -22,17 +27,12 @@ class CustomerEndpointConfiguration {
 	@Bean
 	RouterFunction<ServerResponse> routes(CustomerHandler handler) {
 		String prefix = "/fn/customers";
-		RouterFunction<ServerResponse> customerRoutes =
-				// route(method(HttpMethod.GET), handler::handleFindAll)
-				// .andRoute(method(HttpMethod.POST), handler::handleCreateCustomer)
-				route(RequestPredicates.GET(prefix + "/{id}"),
-						handler::handleFindCustomerById);
+		RouterFunction<ServerResponse> routes = //
+				route(GET("/{id}"), handler::handleFindCustomerById)
+						.andRoute(method(HttpMethod.GET), handler::handleFindAll)
+						.andRoute(method(HttpMethod.POST), handler::handleCreateCustomer);
 
-		return RouterFunctions
-				.route(RequestPredicates.GET(prefix), handler::handleFindAll)
-				.andRoute(RequestPredicates.GET(prefix + "/{id}"),
-						handler::handleFindCustomerById)
-				.andRoute(RequestPredicates.POST(prefix), handler::handleCreateCustomer);
+		return RouterFunctions.nest(path(prefix), routes);
 	}
 
 }
