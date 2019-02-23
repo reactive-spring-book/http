@@ -3,16 +3,11 @@ package http;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.FluxExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -50,22 +45,16 @@ public abstract class AbstractRestBaseClass {
 				.thenReturn(iterable);
 
 		Mockito//
-				.when(this.customerRepository.findOne("1"))//
+				.when(this.customerRepository.findById("1"))//
 				.thenAnswer(invocation -> Mono.just(new Customer("1", "A")));
 
 		Mockito //
 				.when(this.customerRepository.save(Mockito.any()))//
 				.then(invocation -> {
-					Publisher cast = Publisher.class.cast(invocation.getArguments()[0]);
-					Flux<Customer> customers = Flux.from(cast);
-					StepVerifier //
-							.create(customers) //
-							.expectNextCount(1) //
-							.verifyComplete();
-					saved.set(customers.blockFirst());
-					String name = saved.get().getName();
+					Customer customer = Customer.class.cast(invocation.getArguments()[0]);
 					String uid = UUID.randomUUID().toString();
-					return Mono.just(new Customer(uid, name));
+					this.saved.set(new Customer(uid, customer.getName()));
+					return Mono.just(this.saved.get());
 				});
 	}
 
@@ -90,7 +79,7 @@ public abstract class AbstractRestBaseClass {
 	@Test
 	public void byId() {
 
-		FluxExchangeResult<Customer> customerFluxExchangeResult = this.client.get() //
+		FluxExchangeResult<Customer> getCustomerByIdResult = this.client.get() //
 				.uri(rootUrl() + "/customers/1") //
 				.exchange() //
 				.expectStatus().isOk() //
@@ -98,7 +87,7 @@ public abstract class AbstractRestBaseClass {
 				.contentType(MediaType.APPLICATION_JSON_UTF8) //
 				.returnResult(Customer.class);
 
-		Flux<Customer> responseBody = customerFluxExchangeResult.getResponseBody();
+		Flux<Customer> responseBody = getCustomerByIdResult.getResponseBody();
 
 		StepVerifier //
 				.create(responseBody) //
@@ -109,13 +98,15 @@ public abstract class AbstractRestBaseClass {
 	@Test
 	public void create() throws Exception {
 		String krusty = "Krusty";
-		this.client.post().uri(rootUrl() + "/customers") //
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.body(BodyInserters.fromObject(new Customer(krusty))).exchange()
-				.expectHeader().exists(HttpHeaders.LOCATION).expectStatus().isCreated();
+		this.client.post() //
+				.uri(rootUrl() + "/customers") //
+				.contentType(MediaType.APPLICATION_JSON_UTF8) //
+				.body(BodyInserters.fromObject(new Customer(krusty))) //
+				.exchange() //
+				.expectHeader().exists(HttpHeaders.LOCATION) //
+				.expectStatus().isCreated();
 
 		Assert.assertTrue(this.saved.get().getName().equalsIgnoreCase(krusty));
-
 	}
 
 }

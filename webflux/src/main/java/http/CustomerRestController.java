@@ -19,7 +19,7 @@ class CustomerRestController {
 
 	@GetMapping("/{id}")
 	Publisher<Customer> byId(@PathVariable String id) {
-		return this.customerRepository.findOne(id);
+		return this.customerRepository.findById(id);
 	}
 
 	@GetMapping
@@ -29,7 +29,7 @@ class CustomerRestController {
 
 	@PostMapping
 	Mono<ResponseEntity<?>> create(@RequestBody Customer customer) {
-		return this.customerRepository.save(Mono.just(customer)) //
+		return this.customerRepository.save(customer) //
 				.map(body -> ResponseEntity //
 						.created(URI.create("/rc/customers/" + body.getId())) //
 						.build());
