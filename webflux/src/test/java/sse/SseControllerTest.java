@@ -24,7 +24,8 @@ public class SseControllerTest {
 	@Test
 	public void sse() {
 
-		FluxExchangeResult<String> result = this.client.get() //
+		FluxExchangeResult<String> result = this.client //
+				.get() //
 				.uri("/sse/4") //
 				.accept(MediaType.TEXT_EVENT_STREAM) //
 				.exchange() //
