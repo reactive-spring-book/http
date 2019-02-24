@@ -24,14 +24,24 @@ public class SseControllerTest {
 	@Test
 	public void sse() {
 
-		FluxExchangeResult<String> result = this.client.get().uri("/sse/4")
-				.accept(MediaType.TEXT_EVENT_STREAM).exchange().expectStatus().isOk()
-				.expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM)
+		FluxExchangeResult<String> result = this.client.get() //
+				.uri("/sse/4") //
+				.accept(MediaType.TEXT_EVENT_STREAM) //
+				.exchange() //
+				.expectStatus().isOk() //
+				.expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM) //
 				.returnResult(String.class);
 
-		StepVerifier.create(result.getResponseBody()).expectSubscription()
-				.thenAwait(Duration.ofSeconds(10)).expectNext("# 1").expectNext("# 2")
-				.expectNext("# 3").expectNext("# 4").thenCancel().verify();
+		StepVerifier //
+				.create(result.getResponseBody()) //
+				.expectSubscription() //
+				.thenAwait(Duration.ofSeconds(10)) //
+				.expectNext("# 1") //
+				.expectNext("# 2") //
+				.expectNext("# 3") //
+				.expectNext("# 4") //
+				.thenCancel() //
+				.verify();
 	}
 
 }
