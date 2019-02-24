@@ -26,7 +26,7 @@ public class SseControllerTest {
 
 		FluxExchangeResult<String> result = this.client //
 				.get() //
-				.uri("/sse/4") //
+				.uri("/sse/2") //
 				.accept(MediaType.TEXT_EVENT_STREAM) //
 				.exchange() //
 				.expectStatus().isOk() //
@@ -36,12 +36,10 @@ public class SseControllerTest {
 		StepVerifier //
 				.create(result.getResponseBody()) //
 				.expectSubscription() //
-				.thenAwait(Duration.ofSeconds(10)) //
+				.thenAwait(Duration.ofSeconds(4)) //
 				.expectNext("# 1") //
 				.expectNext("# 2") //
-				.expectNext("# 3") //
-				.expectNext("# 4") //
-				.thenCancel() //
+				.expectComplete() //
 				.verify();
 	}
 
