@@ -23,30 +23,26 @@ public class WsApplication {
 		return new WebSocketHandlerAdapter();
 	}
 
-	private static void log(String m) {
-		log.info(m);
-	}
-
 	@Bean
 	WebSocketHandler webSocketHandler() {
 		return session -> {
 			var out = IntervalMessageProducer //
 					.produce() //
-					.doOnNext(WsApplication::log) //
+					.doOnNext(log::info) //
 					.map(session::textMessage) //
 					.doFinally(signalType -> {
 						if (signalType.equals(SignalType.CANCEL)) {
-							log("somebody disconnected!");
+							log.info("somebody disconnected!");
 						}
 						else {
-							log("signal type: " + signalType);
+							log.info("signal type: " + signalType);
 						}
 					});
 			return session //
 					.send(out) //
 					.and(session.receive() //
 							.map(WebSocketMessage::getPayloadAsText) //
-							.doOnNext(WsApplication::log) //
+							.doOnNext(log::info) //
 			);
 		};
 	}
