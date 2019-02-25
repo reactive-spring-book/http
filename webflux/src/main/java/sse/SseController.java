@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 @Log4j2
@@ -32,15 +33,10 @@ class SseController {
 
 		var counter = new AtomicLong();
 
-		var generate = Stream.generate(() -> {
+		return Flux.interval(Duration.ofSeconds(1)).map(i -> {
 			var nextValue = counter.incrementAndGet();
 			return new CountAndString("# " + nextValue, nextValue);
-		});
-
-		return Flux //
-				.fromStream(generate).takeWhile(s -> s.getCount() <= count)
-				.map(CountAndString::getMessage).delayElements(Duration.ofSeconds(1));
-
+		}).map(CountAndString::getMessage).take(count);
 	}
 
 }
