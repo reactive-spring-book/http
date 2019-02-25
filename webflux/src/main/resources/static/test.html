@@ -12,26 +12,31 @@
 
 <script>
 
-    let ws = null;
+    function log(msg) {
+        const messagesDiv = document.getElementById('messages');
+        const elem = document.createElement('div');
+        const txt = document.createTextNode(msg);
+        elem.appendChild(txt);
+        messagesDiv.append(elem);
+    }
+
+    let websocket = null;
 
     document
         .getElementById('close')
         .addEventListener('click', (evt) => {
-            console.log('click!');
             evt.preventDefault();
-            ws.close();
+            websocket.close();
             return false;
         });
 
     window
         .addEventListener('load', (e) => {
-            const messagesDiv = document.getElementById('messages');
-            ws = new WebSocket('ws://localhost:8080/ws/messages');
-            ws.addEventListener('message', (e) => {
-                const elem = document.createElement('div');
-                elem.innerText = e.data;
-                messagesDiv.append(elem);
-                ws.send(e.data  + ' reply')
+            websocket = new WebSocket('ws://localhost:8080/ws/messages');
+            websocket.addEventListener('message', (e) => {
+                let msg = e.data;
+                log(msg);
+                websocket.send(msg + ' reply');
             });
 
         });

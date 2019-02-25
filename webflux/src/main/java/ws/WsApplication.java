@@ -30,8 +30,11 @@ public class WsApplication {
 	@Bean
 	WebSocketHandler webSocketHandler() {
 		return session -> {
-			var out = IntervalMessageProducer.produce().doOnNext(WsApplication::log)
-					.map(session::textMessage).doFinally(signalType -> {
+			var out = IntervalMessageProducer //
+					.produce() //
+					.doOnNext(WsApplication::log) //
+					.map(session::textMessage) //
+					.doFinally(signalType -> {
 						if (signalType.equals(SignalType.CANCEL)) {
 							log("somebody disconnected!");
 						}
