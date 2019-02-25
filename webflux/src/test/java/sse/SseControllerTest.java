@@ -21,10 +21,15 @@ public class SseControllerTest {
 	@Test
 	public void sse() {
 
-		StepVerifier.create(client.get().uri("/sse/2").exchange().expectStatus().isOk()
-				.expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM)
-				.returnResult(String.class).getResponseBody()).expectNext("# 1")
-				.expectNext("# 2").verifyComplete();
+		StepVerifier.create(this.client.get() //
+				.uri("/sse/2") //
+				.exchange() //
+				.expectStatus().isOk() //
+				.expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM) //
+				.returnResult(String.class) //
+				.getResponseBody()).expectNext("# 1") //
+				.expectNext("# 2") //
+				.verifyComplete();
 
 	}
 
