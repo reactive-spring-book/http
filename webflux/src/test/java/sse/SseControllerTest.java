@@ -28,7 +28,8 @@ public class SseControllerTest {
 				.expectStatus().isOk() //
 				.expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM) //
 				.returnResult(String.class) //
-				.getResponseBody()) //
+				.getResponseBody()//
+		) //
 				.expectNext("# 1") //
 				.expectNext("# 2") //
 				.verifyComplete();
