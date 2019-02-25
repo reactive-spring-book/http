@@ -24,7 +24,7 @@ public class WsApplication {
 	}
 
 	private static void log(String m) {
-		System.out.println(m);
+		log.info(m);
 	}
 
 	@Bean
