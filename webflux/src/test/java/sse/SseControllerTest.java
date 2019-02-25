@@ -21,7 +21,8 @@ public class SseControllerTest {
 	@Test
 	public void sse() {
 
-		StepVerifier.create(this.client.get() //
+		StepVerifier.create(this.client //
+				.get() //
 				.uri("/sse/2") //
 				.exchange() //
 				.expectStatus().isOk() //
