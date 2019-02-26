@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
-@SpringBootTest(webEnvironment =
-	SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @RunWith(SpringRunner.class)
 public class WsApplicationTest {
 
@@ -31,27 +30,16 @@ public class WsApplicationTest {
 		int max = 2;
 		List<String> values = new ArrayList<String>();
 		URI uri = URI.create("ws://localhost:8080/ws/messages");
-		Mono<Void> execute = socketClient
-			.execute(uri, session -> {
+		Mono<Void> execute = socketClient.execute(uri, session -> {
 
-					Flux<WebSocketMessage> map =
-						session
-							.receive()
-							.map(WebSocketMessage::getPayloadAsText)
-							.map(str -> str + " reply")
-							.doOnNext(values::add)
-							.map(session::textMessage)
-							.take(max);
+			Flux<WebSocketMessage> map = session.receive()
+					.map(WebSocketMessage::getPayloadAsText).map(str -> str + " reply")
+					.doOnNext(values::add).map(session::textMessage).take(max);
 
-					return session
-						.send(map)
-						.then();
-				}
-			);
-		StepVerifier
-			.create(execute)
-			.expectComplete()
-			.verify(Duration.ofSeconds(max + 2));
+			return session.send(map).then();
+		});
+		StepVerifier.create(execute).expectComplete().verify(Duration.ofSeconds(max + 2));
 		Assert.assertEquals(max, values.size());
 	}
+
 }

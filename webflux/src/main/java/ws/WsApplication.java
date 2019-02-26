@@ -30,34 +30,32 @@ public class WsApplication {
 		return session -> {
 
 			Flux<WebSocketMessage> out = IntervalMessageProducer //
-				.produce() //
-				.doOnNext(log::info) //
-				.map(session::textMessage) //
-				.doFinally(consumer("outbound connection"));
+					.produce() //
+					.doOnNext(log::info) //
+					.map(session::textMessage) //
+					.doFinally(consumer("outbound connection"));
 
-			Flux<String> in = session
-				.receive() //
-				.map(WebSocketMessage::getPayloadAsText) //
-				.doFinally(consumer("inbound connection", st -> {
-					if (st.equals(SignalType.ON_COMPLETE)) {
-						session.close().subscribe();
-					}
-				}))
-				.doOnNext(log::info);
+			Flux<String> in = session.receive() //
+					.map(WebSocketMessage::getPayloadAsText) //
+					.doFinally(consumer("inbound connection", st -> {
+						if (st.equals(SignalType.ON_COMPLETE)) {
+							session.close().subscribe();
+						}
+					})).doOnNext(log::info);
 
 			return session //
-				.send(out) //
-				.and(in); //
+					.send(out) //
+					.and(in); //
 		};
 	}
 
-	private static Consumer<SignalType> consumer(
-		String msg, Consumer<SignalType> consumer) {
+	private static Consumer<SignalType> consumer(String msg,
+			Consumer<SignalType> consumer) {
 		return consumer(msg).andThen(consumer);
 	}
 
 	private static Consumer<SignalType> consumer(String msg) {
-		return signalType -> 	log.info(msg + " : " + signalType);
+		return signalType -> log.info(msg + " : " + signalType);
 	}
 
 	@Bean
@@ -65,7 +63,7 @@ public class WsApplication {
 		return new SimpleUrlHandlerMapping() {
 			{
 				this.setUrlMap(
-					Collections.singletonMap("/ws/messages", webSocketHandler()));
+						Collections.singletonMap("/ws/messages", webSocketHandler()));
 				this.setOrder(10);
 			}
 		};

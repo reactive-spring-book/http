@@ -28,11 +28,11 @@ public abstract class IntervalMessageProducer {
 		AtomicLong counter = new AtomicLong();
 
 		return Flux.interval(Duration.ofSeconds(1)) //
-			.map(i -> {
-				long nextValue = counter.incrementAndGet();
-				return new CountAndString("# " + nextValue, nextValue);
-			}) //
-			.map(CountAndString::getMessage);
+				.map(i -> {
+					long nextValue = counter.incrementAndGet();
+					return new CountAndString("# " + nextValue, nextValue);
+				}) //
+				.map(CountAndString::getMessage);
 	}
 
 }
