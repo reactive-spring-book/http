@@ -21,25 +21,24 @@ public class WsApplicationTest {
 
 	@Test
 	public void testNotificationsOnUpdates() throws Exception {
-
+		int max = 5;
 		URI uri = URI.create("ws://localhost:8080/ws/messages");
-
 		// this will demonstrate the request/reply for the messages.
 		socketClient
 			.execute(uri, session ->
-
-				session.send(
 				session
-					.receive()
-					.map(WebSocketMessage::getPayloadAsText)
-					.map(str -> str + " reply")
-					.map(session::textMessage)
-				)
+					.send(
+						session
+							.receive()
+							.map(WebSocketMessage::getPayloadAsText)
+							.map(str -> str + " reply")
+							.map(session::textMessage)
+							.take(max)
+					)
 					.then()
 			)
 			.subscribe();
-
-		Thread.sleep(10 * 1000);
+		Thread.sleep(1000 + (max * 1000));
 
 	}
 }
