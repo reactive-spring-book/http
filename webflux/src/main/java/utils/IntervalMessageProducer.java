@@ -7,9 +7,6 @@ import reactor.core.publisher.Flux;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
- */
 public abstract class IntervalMessageProducer {
 
 	public static Flux<String> produce(int c) {
@@ -28,14 +25,14 @@ public abstract class IntervalMessageProducer {
 
 		}
 
-		var counter = new AtomicLong();
+		AtomicLong counter = new AtomicLong();
 
 		return Flux.interval(Duration.ofSeconds(1)) //
-				.map(i -> {
-					var nextValue = counter.incrementAndGet();
-					return new CountAndString("# " + nextValue, nextValue);
-				}) //
-				.map(CountAndString::getMessage);
+			.map(i -> {
+				long nextValue = counter.incrementAndGet();
+				return new CountAndString("# " + nextValue, nextValue);
+			}) //
+			.map(CountAndString::getMessage);
 	}
 
 }

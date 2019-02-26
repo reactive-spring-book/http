@@ -9,6 +9,7 @@ import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.SignalType;
 import utils.IntervalMessageProducer;
 
@@ -28,13 +29,13 @@ public class WsApplication {
 	WebSocketHandler webSocketHandler() {
 		return session -> {
 
-			var out = IntervalMessageProducer //
+			Flux<WebSocketMessage> out = IntervalMessageProducer //
 				.produce() //
 				.doOnNext(log::info) //
 				.map(session::textMessage) //
 				.doFinally(consumer("outbound connection"));
 
-			var in = session
+			Flux<String> in = session
 				.receive() //
 				.map(WebSocketMessage::getPayloadAsText) //
 				.doFinally(consumer("inbound connection", st -> {
@@ -51,14 +52,12 @@ public class WsApplication {
 	}
 
 	private static Consumer<SignalType> consumer(
-		String msg,
-		Consumer<SignalType> consumer) {
+		String msg, Consumer<SignalType> consumer) {
 		return consumer(msg).andThen(consumer);
 	}
 
 	private static Consumer<SignalType> consumer(String msg) {
-		return signalType ->
-			log.info(msg + " : " + signalType);
+		return signalType -> 	log.info(msg + " : " + signalType);
 	}
 
 	@Bean
