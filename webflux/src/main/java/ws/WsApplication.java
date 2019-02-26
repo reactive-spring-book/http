@@ -13,6 +13,7 @@ import reactor.core.publisher.SignalType;
 import utils.IntervalMessageProducer;
 
 import java.util.Collections;
+import java.util.function.Consumer;
 
 @Log4j2
 @SpringBootApplication
@@ -26,25 +27,38 @@ public class WsApplication {
 	@Bean
 	WebSocketHandler webSocketHandler() {
 		return session -> {
+
 			var out = IntervalMessageProducer //
-					.produce() //
-					.doOnNext(log::info) //
-					.map(session::textMessage) //
-					.doFinally(signalType -> {
-						if (signalType.equals(SignalType.CANCEL)) {
-							log.info("somebody disconnected!");
-						}
-						else {
-							log.info("signal type: " + signalType);
-						}
-					});
+				.produce() //
+				.doOnNext(log::info) //
+				.map(session::textMessage) //
+				.doFinally(consumer("outbound connection"));
+
+			var in = session
+				.receive() //
+				.map(WebSocketMessage::getPayloadAsText) //
+				.doFinally(consumer("inbound connection", st -> {
+					if (st.equals(SignalType.ON_COMPLETE)) {
+						session.close().subscribe();
+					}
+				}))
+				.doOnNext(log::info);
+
 			return session //
-					.send(out) //
-					.and(session.receive() //
-							.map(WebSocketMessage::getPayloadAsText) //
-							.doOnNext(log::info) //
-			);
+				.send(out) //
+				.and(in); //
 		};
+	}
+
+	private static Consumer<SignalType> consumer(
+		String msg,
+		Consumer<SignalType> consumer) {
+		return consumer(msg).andThen(consumer);
+	}
+
+	private static Consumer<SignalType> consumer(String msg) {
+		return signalType ->
+			log.info(msg + " : " + signalType);
 	}
 
 	@Bean
@@ -52,7 +66,7 @@ public class WsApplication {
 		return new SimpleUrlHandlerMapping() {
 			{
 				this.setUrlMap(
-						Collections.singletonMap("/ws/messages", webSocketHandler()));
+					Collections.singletonMap("/ws/messages", webSocketHandler()));
 				this.setOrder(10);
 			}
 		};
