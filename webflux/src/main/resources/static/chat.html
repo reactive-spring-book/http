@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Chat</title>
+</head>
+<body>
+
+<script>
+
+    let websocket = null;
+
+    window
+        .addEventListener('load', (e) => {
+
+            let messages = document.getElementById('messages');
+            let button = document.getElementById('send');
+            let message = document.getElementById('message');
+
+            websocket = new WebSocket('ws://localhost:8080/ws/chat');
+            websocket.addEventListener('message', (e) => {
+                let element = document.createElement('div');
+                element.innerText = e.data;
+                messages.appendChild(element);
+            });
+
+            document
+                .getElementById('send')
+                .addEventListener('click', (e) => {
+                    e.preventDefault();
+                    websocket.send(JSON.stringify({'text': message.value.trim()}));
+                    return false;
+                });
+        });
+</script>
+<div id="messages"></div>
+<textarea name="message" id="message"></textarea>
+<button id="send">Send</button>
+<style>
+    #messages {
+        background-color: palegreen;
+        overflow: scroll;
+        width: 100%;
+        height: 72pt;
+    }
+
+    #message {
+        width: 100%;
+        height: 24pt;
+    }
+</style>
+</body>
+</html>

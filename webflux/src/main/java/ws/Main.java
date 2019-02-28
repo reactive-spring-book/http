@@ -13,6 +13,7 @@ import java.util.stream.IntStream;
 /**
  * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
  */
+@Deprecated
 @Log4j2
 public class Main {
 
