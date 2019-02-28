@@ -28,17 +28,23 @@ public class WsApplicationTest {
 	@Test
 	public void testNotificationsOnUpdates() throws Exception {
 		int max = 2;
-		List<String> values = new ArrayList<String>();
+		List<String> values = new ArrayList<>();
 		URI uri = URI.create("ws://localhost:8080/ws/messages");
 		Mono<Void> execute = socketClient.execute(uri, session -> {
 
-			Flux<WebSocketMessage> map = session.receive()
-					.map(WebSocketMessage::getPayloadAsText).map(str -> str + " reply")
-					.doOnNext(values::add).map(session::textMessage).take(max);
+			Flux<WebSocketMessage> map = session.receive() //
+					.map(WebSocketMessage::getPayloadAsText) //
+					.map(str -> str + " reply").doOnNext(values::add) //
+					.map(session::textMessage) //
+					.take(max);
 
 			return session.send(map).then();
 		});
-		StepVerifier.create(execute).expectComplete().verify(Duration.ofSeconds(max + 2));
+		StepVerifier //
+				.create(execute) //
+				.expectComplete() //
+				.verify(Duration.ofSeconds(max + 2));
+
 		Assert.assertEquals(max, values.size());
 	}
 

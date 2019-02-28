@@ -12,9 +12,11 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath/>
     </parent>
+    <properties>
+        <java.version>11</java.version>
+    </properties>
     <modules>
         <module>webflux</module>
-        <module>websockets</module>
         <module>servlets</module>
     </modules>
     <dependencies>
