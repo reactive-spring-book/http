@@ -1,4 +1,4 @@
-package ws;
+package ws.chat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -22,32 +22,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @Log4j2
 @Configuration
-class ChatWebsocketConfiguration {
+public class ChatWebsocketConfiguration {
 
 	ChatWebsocketConfiguration(ObjectMapper objectMapper) {
 		this.objectMapper = objectMapper;
-	}
-
-	@Data
-	@RequiredArgsConstructor
-	private static class Connection {
-
-		private final String id;
-
-		private final WebSocketSession session;
-
-	}
-
-	@Data
-	@RequiredArgsConstructor
-	private static class Message {
-
-		private final String clientId;
-
-		private final String text;
-
-		private final Date when;
-
 	}
 
 	private final Map<String, Connection> sessions = new ConcurrentHashMap<>();
@@ -67,7 +45,7 @@ class ChatWebsocketConfiguration {
 	}
 
 	@Bean
-	WebSocketHandler chatWsh(ExecutorService executorService) {
+	public WebSocketHandler chatWsh(ExecutorService executorService) {
 
 		var messagesToBroadcast = Flux
 				.<Message>create(sink -> executorService.submit(() -> {

@@ -1,4 +1,4 @@
-package ws;
+package ws.echo;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -13,10 +13,10 @@ import java.util.function.Consumer;
 
 @Log4j2
 @Configuration
-class EchoWebsocketConfiguration {
+public class EchoWebsocketConfiguration {
 
 	@Bean
-	WebSocketHandler echoWsh() {
+	public WebSocketHandler echoWsh() {
 		return session -> {
 
 			Flux<WebSocketMessage> out = IntervalMessageProducer //

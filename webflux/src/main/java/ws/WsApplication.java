@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
+import ws.chat.ChatWebsocketConfiguration;
+import ws.echo.EchoWebsocketConfiguration;
 
 import java.util.Map;
 import java.util.concurrent.Executors;
