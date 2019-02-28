@@ -79,7 +79,8 @@ class ChatWebsocketConfiguration {
 							throw new RuntimeException(e);
 						}
 					}
-				})).share();
+				})) //
+				.share();
 
 		return session -> {
 
