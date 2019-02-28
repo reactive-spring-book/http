@@ -3,12 +3,57 @@
 <head>
     <meta charset="utf-8">
     <title>Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+          crossorigin="anonymous">
+
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
 </head>
-<body>
+<body style="padding: 10px">
+
+<div id="messages"></div>
+<div>
+    <textarea name="message" id="message"></textarea>
+    <button id="send">Send</button>
+</div>
+
+<style>
+    #messages {
+        background-color: palegreen;
+        overflow: scroll;
+        padding: 10px;
+        width: 100%;
+        height: 72pt;
+        margin-bottom: 10px;
+    }
+
+    #send {
+        float: left;
+        width: 50px;
+
+    }
+
+    #message {
+        float: left;
+        width: 100%;
+        height: 80%;
+        margin-bottom: 10px;
+    }
+
+</style>
 
 <script>
 
-    let websocket = null;
 
     window
         .addEventListener('load', (e) => {
@@ -16,38 +61,41 @@
             let messages = document.getElementById('messages');
             let button = document.getElementById('send');
             let message = document.getElementById('message');
+            let websocket = new WebSocket('ws://localhost:8080/ws/chat');
 
-            websocket = new WebSocket('ws://localhost:8080/ws/chat');
-            websocket.addEventListener('message', (e) => {
-                let element = document.createElement('div');
-                element.innerText = e.data;
-                messages.appendChild(element);
-            });
+            websocket
+                .addEventListener('message', (e) => {
+                    let element = document.createElement('div');
+                    element.innerText = e.data;
+                    messages.appendChild(element);
+                });
 
-            document
-                .getElementById('send')
+            function send() {
+                let value = message.value;
+                message.value = '';
+                websocket.send(JSON.stringify({'text': value.trim()}));
+            }
+
+            window
+                .addEventListener('beforeunload', (e) => {
+                    alert('test')
+                });
+
+            message
+                .addEventListener('keydown', (e) => {
+                    let key = e.key;
+                    if (key === 'Enter') {
+                        send();
+                    }
+                });
+
+            button
                 .addEventListener('click', (e) => {
+                    send();
                     e.preventDefault();
-                    websocket.send(JSON.stringify({'text': message.value.trim()}));
                     return false;
                 });
         });
 </script>
-<div id="messages"></div>
-<textarea name="message" id="message"></textarea>
-<button id="send">Send</button>
-<style>
-    #messages {
-        background-color: palegreen;
-        overflow: scroll;
-        width: 100%;
-        height: 72pt;
-    }
-
-    #message {
-        width: 100%;
-        height: 24pt;
-    }
-</style>
 </body>
 </html>

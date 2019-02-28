@@ -7,11 +7,11 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.Assert;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.SignalType;
 
 import java.util.Date;
 import java.util.Map;
@@ -69,7 +69,6 @@ class ChatWebsocketConfiguration {
 	@Bean
 	WebSocketHandler chatWsh(ExecutorService executorService) {
 
-		Assert.notNull(executorService);
 		var messagesToBroadcast = Flux
 				.<Message>create(sink -> executorService.submit(() -> {
 					while (true) {
@@ -84,20 +83,25 @@ class ChatWebsocketConfiguration {
 
 		return session -> {
 
-			this.sessions.put(session.getId(), new Connection(session.getId(), session));
+			var sessionId = session.getId();
 
-			log.info("new session with session ID ('" + session.getId() + "')");
+			this.sessions.put(sessionId, new Connection(sessionId, session));
 
 			var in = session //
 					.receive() //
 					.map(WebSocketMessage::getPayloadAsText) //
 					.map(this::from) //
-					.map(msg -> new Message(session.getId(), msg.getText(), new Date())) //
-					.doOnNext(msg -> log.info("new message: " + msg.toString())) //
-					.map(this.messages::offer); //
+					.map(msg -> new Message(sessionId, msg.getText(), new Date())) //
+					.map(this.messages::offer)//
+					.doFinally(st -> {//
+						if (st.equals(SignalType.ON_COMPLETE)) {//
+							this.sessions.remove(sessionId);//
+						}
+					}); //
 
 			var out = messagesToBroadcast //
-					.map(msg -> session.textMessage(from(msg)));
+					.map(this::from)//
+					.map(session::textMessage);
 
 			return session.send(out).and(in);
 		};
