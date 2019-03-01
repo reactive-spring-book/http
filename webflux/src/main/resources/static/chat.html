@@ -28,74 +28,30 @@
 </div>
 
 <style>
+
     #messages {
-        background-color: palegreen;
+        background-color: paleturquoise;
         overflow: scroll;
         padding: 10px;
-        width: 100%;
-        height: 72pt;
-        margin-bottom: 10px;
+        max-height: 300px;
+        min-height: 100px;
     }
 
     #send {
         float: left;
-        width: 50px;
-
     }
 
     #message {
         float: left;
         width: 100%;
-        height: 80%;
-        margin-bottom: 10px;
+        vertical-align: bottom;
+        max-height: 300px;
+        min-height: 100px;
     }
+
 
 </style>
 
-<script>
-
-
-    window
-        .addEventListener('load', (e) => {
-
-            let messages = document.getElementById('messages');
-            let button = document.getElementById('send');
-            let message = document.getElementById('message');
-            let websocket = new WebSocket('ws://localhost:8080/ws/chat');
-
-            websocket
-                .addEventListener('message', (e) => {
-                    let element = document.createElement('div');
-                    element.innerText = e.data;
-                    messages.appendChild(element);
-                });
-
-            function send() {
-                let value = message.value;
-                message.value = '';
-                websocket.send(JSON.stringify({'text': value.trim()}));
-            }
-
-            window
-                .addEventListener('beforeunload', (e) => {
-                    alert('test')
-                });
-
-            message
-                .addEventListener('keydown', (e) => {
-                    let key = e.key;
-                    if (key === 'Enter') {
-                        send();
-                    }
-                });
-
-            button
-                .addEventListener('click', (e) => {
-                    send();
-                    e.preventDefault();
-                    return false;
-                });
-        });
-</script>
+<script src="chat.js"></script>
 </body>
 </html>

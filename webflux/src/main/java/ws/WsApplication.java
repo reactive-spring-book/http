@@ -19,11 +19,6 @@ import java.util.concurrent.ScheduledExecutorService;
 public class WsApplication {
 
 	@Bean
-	ScheduledExecutorService scheduledExecutorService() {
-		return Executors.newScheduledThreadPool(10);
-	}
-
-	@Bean
 	WebSocketHandlerAdapter webSocketHandlerAdapter() {
 		return new WebSocketHandlerAdapter();
 	}
@@ -36,7 +31,7 @@ public class WsApplication {
 
 				var endpointsToWSH = Map.of( //
 						"/ws/messages", ewc.echoWsh(), //
-						"/ws/chat", cwc.chatWsh(null) //
+						"/ws/chat", cwc.chatWsh() //
 				);
 				this.setUrlMap(endpointsToWSH);
 				this.setOrder(10);
