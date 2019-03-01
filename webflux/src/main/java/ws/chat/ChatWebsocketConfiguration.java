@@ -47,7 +47,7 @@ public class ChatWebsocketConfiguration {
 		// <1>
 		// todo replace executor with scheduler.
 		// todo why does this shutdown with 130?
-		var executor = Executors.newSingleThreadScheduledExecutor();
+		var executor = Executors.newSingleThreadExecutor();
 		var messagesToBroadcast = Flux.<Message>create(sink -> {
 			var submit = executor.submit(() -> {
 				while (true) {

@@ -13,6 +13,9 @@
         <relativePath/>
     </parent>
     <properties>
+        <start-class>
+            ws.WsApplication
+        </start-class>
         <java.version>11</java.version>
     </properties>
     <modules>
@@ -68,6 +71,10 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
