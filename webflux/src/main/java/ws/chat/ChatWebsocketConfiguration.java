@@ -44,21 +44,21 @@ public class ChatWebsocketConfiguration {
 	@Bean
 	public WebSocketHandler chatWsh(ExecutorService executorService) {
 
-		var messagesToBroadcast = Flux
-			.<Message>create(sink -> {
-				var submit = executorService.submit(() -> {
-					while (true) {
-						try {
-							sink.next(this.messages.take());
+		var messagesToBroadcast = Flux //
+				.<Message>create(sink -> {
+					var submit = executorService.submit(() -> {
+						while (true) {
+							try {
+								sink.next(this.messages.take());
+							}
+							catch (InterruptedException e) {
+								throw new RuntimeException(e);
+							}
 						}
-						catch (InterruptedException e) {
-							throw new RuntimeException(e);
-						}
-					}
-				});
-				sink.onCancel(() -> submit.cancel(true));
-			}) //
-			.share();
+					});
+					sink.onCancel(() -> submit.cancel(true));
+				}) //
+				.share();
 
 		return session -> {
 
@@ -67,20 +67,20 @@ public class ChatWebsocketConfiguration {
 			this.sessions.put(sessionId, new Connection(sessionId, session));
 
 			var in = session //
-				.receive() //
-				.map(WebSocketMessage::getPayloadAsText) //
-				.map(this::from) //
-				.map(msg -> new Message(sessionId, msg.getText(), new Date())) //
-				.map(this.messages::offer)//
-				.doFinally(st -> {//
-					if (st.equals(SignalType.ON_COMPLETE)) {//
-						this.sessions.remove(sessionId);//
-					}
-				}); //
+					.receive() //
+					.map(WebSocketMessage::getPayloadAsText) //
+					.map(this::from) //
+					.map(msg -> new Message(sessionId, msg.getText(), new Date())) //
+					.map(this.messages::offer)//
+					.doFinally(st -> {//
+						if (st.equals(SignalType.ON_COMPLETE)) {//
+							this.sessions.remove(sessionId);//
+						}
+					}); //
 
 			var out = messagesToBroadcast //
-				.map(this::from)//
-				.map(session::textMessage);
+					.map(this::from)//
+					.map(session::textMessage);
 
 			return session.send(out).and(in);
 		};
