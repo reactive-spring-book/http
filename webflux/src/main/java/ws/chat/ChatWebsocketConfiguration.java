@@ -46,7 +46,7 @@ public class ChatWebsocketConfiguration {
 
 		// <1>
 		// todo replace executor with scheduler.
-		// todo why does this shutdown with 130? 
+		// todo why does this shutdown with 130?
 		var executor = Executors.newSingleThreadScheduledExecutor();
 		var messagesToBroadcast = Flux.<Message>create(sink -> {
 			var submit = executor.submit(() -> {
@@ -61,7 +61,7 @@ public class ChatWebsocketConfiguration {
 			});
 			sink.onCancel(() -> submit.cancel(true));
 		}) //
-			.share();
+				.share();
 
 		return session -> {
 
@@ -70,20 +70,20 @@ public class ChatWebsocketConfiguration {
 			this.sessions.put(sessionId, new Connection(sessionId, session));
 
 			var in = session //
-				.receive() //
-				.map(WebSocketMessage::getPayloadAsText) //
-				.map(this::messageFromJson) //
-				.map(msg -> new Message(sessionId, msg.getText(), new Date())) //
-				.map(this.messages::offer)//
-				.doFinally(st -> { //
-					if (st.equals(SignalType.ON_COMPLETE)) {//
-						this.sessions.remove(sessionId);//
-					}
-				}); //
+					.receive() //
+					.map(WebSocketMessage::getPayloadAsText) //
+					.map(this::messageFromJson) //
+					.map(msg -> new Message(sessionId, msg.getText(), new Date())) //
+					.map(this.messages::offer)//
+					.doFinally(st -> { //
+						if (st.equals(SignalType.ON_COMPLETE)) {//
+							this.sessions.remove(sessionId);//
+						}
+					}); //
 
 			var out = messagesToBroadcast //
-				.map(this::jsonFromMessage)//
-				.map(session::textMessage);
+					.map(this::jsonFromMessage)//
+					.map(session::textMessage);
 
 			return session.send(out).and(in);
 		};
