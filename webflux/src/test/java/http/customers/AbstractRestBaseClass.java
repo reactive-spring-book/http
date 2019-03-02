@@ -1,5 +1,7 @@
-package http;
+package http.customers;
 
+import http.customers.Customer;
+import http.customers.CustomerRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,8 +32,11 @@ public abstract class AbstractRestBaseClass {
 	@MockBean
 	private CustomerRepository customerRepository;
 
-	private final Collection<Customer> results = Arrays.asList(new Customer("1", "A"),
-			new Customer("2", "B"), new Customer("3", "C"), new Customer("4", "D"));
+	private final Collection<Customer> results = Arrays
+		.asList(new Customer("1", "A"),
+			new Customer("2", "B"),
+			new Customer("3", "C"),
+			new Customer("4", "D"));
 
 	private final AtomicReference<Customer> saved = new AtomicReference<>();
 

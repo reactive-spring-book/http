@@ -1,4 +1,4 @@
-package http;
+package http.customers;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

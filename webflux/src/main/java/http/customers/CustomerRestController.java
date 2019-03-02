@@ -1,6 +1,5 @@
-package http;
+package http.customers;
 
-import org.reactivestreams.Publisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
