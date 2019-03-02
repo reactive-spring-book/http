@@ -23,6 +23,7 @@
         <module>servlets</module>
     </modules>
     <dependencies>
+
         <dependency>
             <optional>true</optional>
             <groupId>org.projectlombok</groupId>

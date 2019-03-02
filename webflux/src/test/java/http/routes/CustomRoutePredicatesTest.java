@@ -9,10 +9,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
-/**
- * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
- */
-
 @RunWith(SpringRunner.class)
 @WebFluxTest({ CustomRoutePredicates.class })
 public class CustomRoutePredicatesTest {

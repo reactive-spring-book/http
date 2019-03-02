@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>
+        A Reactive Thymeleaf View
+    </title>
+</head>
+<body>
+
+<h1> Customers
+</h1>
+<ol>
+    <li th:each="customer : ${customers}">
+        <span style="font-size: smaller" th:text="${customer.id}">ID</span>
+        <span th:text="${customer.name}">Name</span>
+    </li>
+</ol>
+</body>
+</html>

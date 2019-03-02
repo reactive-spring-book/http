@@ -1,4 +1,4 @@
-package http;
+package http.routes;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,23 +17,25 @@ public class SimpleFunctionalEndpointConfigurationTest {
 
 	@Test
 	public void sup() {
-		doTest("/sup", "Hi!");
+		this.doTest("/sup", "Hi!");
 	}
 
 	@Test
 	public void hodor() {
-		doTest("/hodor", "Hodor!");
+		this.doTest("/hodor", "Hodor!");
 	}
 
 	@Test
 	public void yo() {
-		doTest("/yo", "Hi!");
+		this.doTest("/yo", "Hi!");
 	}
 
 	private void doTest(String path, String result) {
 
-		this.webTestClient.get().uri(path).exchange().expectBody(String.class)
-				.value(str -> Assert.assertEquals(result, str));
+		this.webTestClient.get() //
+				.uri(path) //
+				.exchange() //
+				.expectBody(String.class).value(str -> Assert.assertEquals(result, str));
 	}
 
 }

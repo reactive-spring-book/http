@@ -8,15 +8,18 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import java.time.Duration;
+import java.util.Map;
+
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
-@Configuration
 @Log4j2
+@Configuration
 class CustomerEndpointConfiguration {
 
 	@Bean
-	RouterFunction<ServerResponse> routes(CustomerHandler handler) {
+	RouterFunction<ServerResponse> customerApiEndpoints(CustomerHandler handler) {
 
 		RouterFunction<ServerResponse> routes = //
 				route(GET("/{id}"), handler::handleFindCustomerById)
@@ -24,6 +27,15 @@ class CustomerEndpointConfiguration {
 						.andRoute(method(HttpMethod.POST), handler::handleCreateCustomer);
 
 		return RouterFunctions.nest(path("/fn/customers"), routes);
+	}
+
+	@Bean
+	RouterFunction<ServerResponse> customerViewEndpoints(CustomerRepository repository) {
+		return route(GET("/customers.php"), request -> {
+			var all = repository.findAll();
+			var map = Map.of("customers", all);
+			return ServerResponse.ok().render("customers", map);
+		});
 	}
 
 }

@@ -1,4 +1,4 @@
-package http;
+package http.routes;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
