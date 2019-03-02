@@ -10,11 +10,11 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
 /**
-	* @author <a href="mailto:josh@joshlong.com">Josh Long</a>
-	*/
+ * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
+ */
 
 @RunWith(SpringRunner.class)
-@WebFluxTest({CustomRoutePredicates.class})
+@WebFluxTest({ CustomRoutePredicates.class })
 public class CustomRoutePredicatesTest {
 
 	@Autowired
@@ -27,19 +27,12 @@ public class CustomRoutePredicatesTest {
 		var lowercaseUri = "/greetings/World";
 		var expectedString = "Hello, World!";
 
-		this.webTestClient
-			.get()
-			.uri(uppercaseUri)
-			.exchange()
-			.expectBody(String.class)
-			.value(equalToIgnoringCase(expectedString));
+		this.webTestClient.get().uri(uppercaseUri).exchange().expectBody(String.class)
+				.value(equalToIgnoringCase(expectedString));
 
-		this.webTestClient
-			.get()
-			.uri(lowercaseUri)
-			.exchange()
-			.expectBody(String.class)
-			.value(equalToIgnoringCase(expectedString));
+		this.webTestClient.get().uri(lowercaseUri).exchange().expectBody(String.class)
+				.value(equalToIgnoringCase(expectedString));
 
 	}
+
 }
