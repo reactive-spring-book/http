@@ -1,7 +1,5 @@
 package http.customers;
 
-import http.customers.Customer;
-import http.customers.CustomerRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,17 +31,14 @@ public abstract class AbstractRestBaseClass {
 	private CustomerRepository customerRepository;
 
 	private final Collection<Customer> results = Arrays
-		.asList(new Customer("1", "A"),
-			new Customer("2", "B"),
-			new Customer("3", "C"),
-			new Customer("4", "D"));
+		.asList(new Customer("1", "A"), new Customer("2", "B"), new Customer("3", "C"), new Customer("4", "D"));
 
 	private final AtomicReference<Customer> saved = new AtomicReference<>();
 
 	@Before
-	public void before() throws Exception {
+	public void before() {
 
-		Flux<Customer> iterable = Flux.fromIterable(this.results);
+		var iterable = Flux.fromIterable(this.results);
 
 		Mockito //
 				.when(this.customerRepository.findAll()) //
@@ -66,7 +61,7 @@ public abstract class AbstractRestBaseClass {
 	@Test
 	public void all() throws Exception {
 
-		FluxExchangeResult<Customer> customerFluxExchangeResult = this.client.get() //
+		var customerFluxExchangeResult = this.client.get() //
 				.uri(rootUrl() + "/customers") //
 				.exchange() //
 				.expectStatus().isOk() //
@@ -74,7 +69,7 @@ public abstract class AbstractRestBaseClass {
 				.contentType(MediaType.APPLICATION_JSON_UTF8) //
 				.returnResult(Customer.class);
 
-		Flux<Customer> responseBody = customerFluxExchangeResult.getResponseBody();
+		var responseBody = customerFluxExchangeResult.getResponseBody();
 
 		StepVerifier //
 				.create(responseBody) //
@@ -84,7 +79,7 @@ public abstract class AbstractRestBaseClass {
 	@Test
 	public void byId() {
 
-		FluxExchangeResult<Customer> getCustomerByIdResult = this.client.get() //
+		var getCustomerByIdResult = this.client.get() //
 				.uri(rootUrl() + "/customers/1") //
 				.exchange() //
 				.expectStatus().isOk() //
@@ -92,7 +87,7 @@ public abstract class AbstractRestBaseClass {
 				.contentType(MediaType.APPLICATION_JSON_UTF8) //
 				.returnResult(Customer.class);
 
-		Flux<Customer> responseBody = getCustomerByIdResult.getResponseBody();
+		var responseBody = getCustomerByIdResult.getResponseBody();
 
 		StepVerifier //
 				.create(responseBody) //
@@ -102,7 +97,7 @@ public abstract class AbstractRestBaseClass {
 
 	@Test
 	public void create() throws Exception {
-		String krusty = "Krusty";
+		var krusty = "Krusty";
 		this.client.post() //
 				.uri(rootUrl() + "/customers") //
 				.contentType(MediaType.APPLICATION_JSON_UTF8) //
@@ -110,7 +105,6 @@ public abstract class AbstractRestBaseClass {
 				.exchange() //
 				.expectHeader().exists(HttpHeaders.LOCATION) //
 				.expectStatus().isCreated();
-
 		Assert.assertTrue(this.saved.get().getName().equalsIgnoreCase(krusty));
 	}
 

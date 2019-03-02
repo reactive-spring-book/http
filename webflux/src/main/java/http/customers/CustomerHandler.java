@@ -33,7 +33,6 @@ class CustomerHandler {
 		return request.bodyToMono(Customer.class).flatMap(repository::save)
 				.flatMap(saved -> ServerResponse
 						.created(URI.create("/fn/customers/" + saved.getId())).build());
-
 	}
 
 }
