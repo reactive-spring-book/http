@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
-import org.springframework.web.reactive.socket.client.WebSocketClient;
 import reactor.test.StepVerifier;
 import ws.WsApplication;
 
@@ -22,10 +21,9 @@ import java.util.ArrayList;
 		WsApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class EchoWebsocketConfigurationTest {
 
-	private final WebSocketClient socketClient = new ReactorNettyWebSocketClient();
-
 	@Test
 	public void testNotificationsOnUpdates() throws Exception {
+		var socketClient = new ReactorNettyWebSocketClient();
 		int max = 2;
 		var values = new ArrayList<>();
 		var uri = URI.create("ws://localhost:8080/ws/messages");
