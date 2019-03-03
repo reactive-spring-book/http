@@ -72,7 +72,10 @@ public class ChatWebsocketConfiguration {
 					.map(WebSocketMessage::getPayloadAsText) //
 					.map(this::messageFromJson) //
 					.map(msg -> new Message(sessionId, msg.getText(), new Date())) //
-					.map(this.messages::offer)//
+					.map(x -> {
+						var result = this.messages.offer(x);
+						return result;
+					})//
 					.doFinally(st -> { //
 						if (st.equals(SignalType.ON_COMPLETE)) {//
 							this.sessions.remove(sessionId);//

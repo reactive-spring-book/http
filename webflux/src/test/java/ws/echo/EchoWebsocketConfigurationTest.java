@@ -1,4 +1,4 @@
-package ws.chat;
+package ws.echo;
 
 import lombok.extern.log4j.Log4j2;
 import org.junit.Assert;
@@ -10,15 +10,17 @@ import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
 import org.springframework.web.reactive.socket.client.WebSocketClient;
 import reactor.test.StepVerifier;
+import ws.WsApplication;
 
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 
 @Log4j2
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @RunWith(SpringRunner.class)
-public class WsApplicationTest {
+@SpringBootTest(classes = {
+		WsApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+public class EchoWebsocketConfigurationTest {
 
 	private final WebSocketClient socketClient = new ReactorNettyWebSocketClient();
 
@@ -30,7 +32,8 @@ public class WsApplicationTest {
 		var execute = socketClient.execute(uri, session -> {
 			var map = session.receive() //
 					.map(WebSocketMessage::getPayloadAsText) //
-					.map(str -> str + " reply").doOnNext(values::add) //
+					.map(str -> str + " reply") //
+					.doOnNext(values::add) //
 					.map(session::textMessage) //
 					.take(max);
 

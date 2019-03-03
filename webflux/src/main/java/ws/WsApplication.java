@@ -11,8 +11,6 @@ import ws.chat.ChatWebsocketConfiguration;
 import ws.echo.EchoWebsocketConfiguration;
 
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 @Log4j2
 @SpringBootApplication
