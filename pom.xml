@@ -13,14 +13,12 @@
         <relativePath/>
     </parent>
     <properties>
-    <!--    <start-class>
-            ws.WsApplication
-        </start-class>-->
+
         <java.version>11</java.version>
     </properties>
     <modules>
         <module>webflux</module>
-        <!--<module>servlets</module>-->
+        <module>servlets</module>
     </modules>
     <dependencies>
         <dependency>
