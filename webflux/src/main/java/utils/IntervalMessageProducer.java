@@ -9,23 +9,23 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class IntervalMessageProducer {
 
+	@Data
+	@AllArgsConstructor
+	private static class CountAndString {
+
+		private String message;
+
+		private long count;
+
+	}
+
 	public static Flux<String> produce(int c) {
 		return produce().take(c);
 	}
 
 	public static Flux<String> produce() {
 
-		@AllArgsConstructor
-		@Data
-		class CountAndString {
-
-			private String message;
-
-			private long count;
-
-		}
-
-		AtomicLong counter = new AtomicLong();
+		var counter = new AtomicLong();
 
 		return Flux.interval(Duration.ofSeconds(1)) //
 				.map(i -> {
