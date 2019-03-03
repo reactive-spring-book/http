@@ -20,10 +20,9 @@
     </properties>
     <modules>
         <module>webflux</module>
-        <module>servlets</module>
+        <!--<module>servlets</module>-->
     </modules>
     <dependencies>
-
         <dependency>
             <optional>true</optional>
             <groupId>org.projectlombok</groupId>
