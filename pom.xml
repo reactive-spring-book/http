@@ -13,9 +13,9 @@
         <relativePath/>
     </parent>
     <properties>
-        <start-class>
+    <!--    <start-class>
             ws.WsApplication
-        </start-class>
+        </start-class>-->
         <java.version>11</java.version>
     </properties>
     <modules>
