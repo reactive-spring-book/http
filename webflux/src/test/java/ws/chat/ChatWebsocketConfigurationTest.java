@@ -39,26 +39,36 @@ public class ChatWebsocketConfigurationTest {
 	}
 
 	@Test
-	public void chat() throws Exception {
+	public void chat() {
 
 		var message = new Message(null, "Hello, world!", null);
 		var uri = URI.create("ws://localhost:8080/ws/chat");
 		var lists = new ArrayList<Message>();
-		var out = new ReactorNettyWebSocketClient().execute(uri, session -> {
 
-			var send = Flux //
-					.just(message) //
-					.map(this::from) //
-					.map(session::textMessage);
+		var out = new ReactorNettyWebSocketClient() //
+				.execute(uri, session -> {
 
-			return session.send(send);
-		});
+					var send = Flux //
+							.just(message) //
+							.map(this::from) //
+							.map(session::textMessage);
 
-		var in = new ReactorNettyWebSocketClient().execute(uri,
-				session -> session.receive().map(WebSocketMessage::getPayloadAsText)
-						.map(this::from).doOnNext(lists::add).take(1).then());
+					return session.send(send);
+				});
 
-		StepVerifier.create(in.and(out)).expectComplete().verify(Duration.ofSeconds(10));
+		var in = new ReactorNettyWebSocketClient()//
+				.execute(uri, session -> session //
+						.receive() //
+						.map(WebSocketMessage::getPayloadAsText) //
+						.map(this::from) //
+						.doOnNext(lists::add) //
+						.take(1)//
+						.then());
+
+		StepVerifier //
+				.create(in.and(out)) //
+				.expectComplete() //
+				.verify(Duration.ofSeconds(20));
 
 		Assert.assertEquals(lists.size(), 1);
 		var next = lists.iterator().next();
