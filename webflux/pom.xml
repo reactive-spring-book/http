@@ -11,7 +11,28 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
+    <properties>
+        <evo.version>1.2.2</evo.version>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.atteo</groupId>
+            <artifactId>evo-inflector</artifactId>
+            <version>${evo.version}</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
