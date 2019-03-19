@@ -16,24 +16,30 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 class SimpleFunctionalEndpointConfiguration {
 
 	@Bean
-	RouterFunction<ServerResponse> greetingsRoutes() {
+	RouterFunction<ServerResponse> greetingsRoutes(
+			GreetingsHandlerFunction handlerFunction) { // <1>
 
-		var handlerFunction = new GreetingsHandlerFunction();
-
-		return route(GET("/hodor"),
-				request -> ok().body(Mono.just("Hodor!"), String.class)) // <1>
-						.andRoute(GET("/yo"), handlerFunction) // <2>
-						.andRoute(GET("/sup"), handlerFunction::handle); // <3>
+		// <2>
+		return route(GET("/hello/{name}"), request -> { // <3>
+			var namePathVariable = request.pathVariable("name");
+			var message = Mono.just(String.format("Hello %s!", namePathVariable));
+			return ok().body(message, String.class);
+		}).andRoute(GET("/hodor"), handlerFunction) // <4>
+				.andRoute(GET("/sup"), handlerFunction::handle); // <5>
 	}
 
-	private static class GreetingsHandlerFunction
-			implements HandlerFunction<ServerResponse> {
+	@Bean
+	GreetingsHandlerFunction greetingsHandlerFunction() {
+		return new GreetingsHandlerFunction();
+	}
 
-		@Override
-		public Mono<ServerResponse> handle(ServerRequest request) {
-			return ok().syncBody("Hi!");
-		}
+}
 
+class GreetingsHandlerFunction implements HandlerFunction<ServerResponse> {
+
+	@Override
+	public Mono<ServerResponse> handle(ServerRequest request) {
+		return ok().syncBody("Hodor!");
 	}
 
 }

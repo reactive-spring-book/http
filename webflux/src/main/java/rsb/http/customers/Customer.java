@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
-@NoArgsConstructor
 @Data
 @Document
+@NoArgsConstructor
 class Customer {
 
 	private String id;

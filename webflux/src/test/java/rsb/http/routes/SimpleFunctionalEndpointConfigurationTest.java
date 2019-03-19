@@ -17,17 +17,17 @@ public class SimpleFunctionalEndpointConfigurationTest {
 
 	@Test
 	public void sup() {
-		this.doTest("/sup", "Hi!");
+		this.doTest("/sup", "Hodor!");
+	}
+
+	@Test
+	public void hello() {
+		this.doTest("/hello/World", "Hello World!");
 	}
 
 	@Test
 	public void hodor() {
 		this.doTest("/hodor", "Hodor!");
-	}
-
-	@Test
-	public void yo() {
-		this.doTest("/yo", "Hi!");
 	}
 
 	private void doTest(String path, String result) {
