@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
@@ -26,12 +27,12 @@ import java.nio.charset.Charset;
 import java.util.HashSet;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@WebFluxTest
 @AutoConfigureWebTestClient
 public class CustomerControllerTest {
 
 	@Test
-	public void useTemplateEngine() throws Exception {
+	public void thymeleafSseView() throws Exception {
 
 		var templateResolver = new ClassLoaderTemplateResolver() {
 			{
@@ -59,10 +60,12 @@ public class CustomerControllerTest {
 		context.setVariable("updates", new ReactiveDataDriverContextVariable(
 				IntervalMessageProducer.produce().take(take), 1));
 
-		StepVerifier.Step<String> stringStep = StepVerifier
-				.create(Flux.from(springWebFluxTemplateEngine.processStream(template,
-						selectors, context, bufferFactory, htmlMediaType, charset))
-						.map(this::bufferAsString))
+		var publisher = Flux
+				.from(springWebFluxTemplateEngine.processStream(template, selectors,
+						context, bufferFactory, htmlMediaType, charset))
+				.map(this::bufferAsString);
+
+		StepVerifier.Step<String> stringStep = StepVerifier.create(publisher)
 				.expectNextMatches(html -> html.contains("<title>Tick Tock</title>"));
 
 		for (int i = 0; i < take; i++) {
@@ -71,9 +74,7 @@ public class CustomerControllerTest {
 					.expectNextMatches(html -> html.contains("# " + capture));
 		}
 
-		stringStep.expectNextMatches(html -> html.contains("</html>"));
-
-		stringStep.verifyComplete();
+		stringStep.expectNextMatches(html -> html.contains("</html>")).verifyComplete();
 
 	}
 

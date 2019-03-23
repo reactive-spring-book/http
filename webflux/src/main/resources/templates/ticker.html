@@ -5,7 +5,7 @@
     <script data-th-inline="javascript">
         window.addEventListener('load', function (loadedEvent) {
             var tickTockBlock = document.getElementById('updateBlock');
-            var es = new EventSource('http://localhost:8080/stream.php');
+            var es = new EventSource('http://localhost:8080/stream');
             es.addEventListener('message', function (update) {
                 tickTockBlock.innerHTML = update.data;
             });
