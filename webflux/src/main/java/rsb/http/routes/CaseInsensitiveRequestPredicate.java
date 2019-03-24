@@ -5,11 +5,11 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 
 class CaseInsensitiveRequestPredicate implements RequestPredicate {
 
+	private final RequestPredicate target;
+
 	public static RequestPredicate i(RequestPredicate rp) {
 		return new CaseInsensitiveRequestPredicate(rp);
 	}
-
-	private final RequestPredicate target;
 
 	CaseInsensitiveRequestPredicate(RequestPredicate target) {
 		this.target = target;

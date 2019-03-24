@@ -29,9 +29,8 @@ class CustomRoutePredicates {
 
 		// <2>
 		var caseInsensitiveRequestPredicate = i(GET("/greetings/{name}"));
-		return route.andRoute(caseInsensitiveRequestPredicate, this::handle);
-
-		// return route;
+		return route //
+				.andRoute(caseInsensitiveRequestPredicate, this::handle);
 	}
 
 	private Mono<ServerResponse> handle(ServerRequest r) {
