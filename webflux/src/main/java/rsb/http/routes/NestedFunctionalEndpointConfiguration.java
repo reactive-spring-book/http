@@ -1,10 +1,9 @@
 package rsb.http.routes;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.HandlerFunction;
-import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import rsb.utils.IntervalMessageProducer;
@@ -18,34 +17,44 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
-@Log4j2
 @Configuration
 class NestedFunctionalEndpointConfiguration {
 
-	private HandlerFunction<ServerResponse> pathVariableHandlerFunction = //
+	// <1>
+	private MediaType sseMT = TEXT_EVENT_STREAM;
+
+	private MediaType jsonUtf8MT = APPLICATION_JSON_UTF8;
+
+	private MediaType jsonMT = APPLICATION_JSON;
+
+	// <2>
+	private HandlerFunction<ServerResponse> pathVariableHF = //
 			request -> ok().syncBody(greet(Optional.of(request.pathVariable("pv"))));
 
-	private HandlerFunction<ServerResponse> noPathVariableHandlerFunction = //
+	private HandlerFunction<ServerResponse> noPathVariableHF = //
 			request -> ok().syncBody(greet(Optional.ofNullable(null)));
 
-	private HandlerFunction<ServerResponse> sseHandlerFunction = //
+	// <3>
+	private HandlerFunction<ServerResponse> sseHF = //
 			request -> ok() //
-					.contentType(TEXT_EVENT_STREAM) //
+					.contentType(sseMT) //
 					.body(IntervalMessageProducer.produce(), String.class);
 
 	@Bean
 	RouterFunction<ServerResponse> nested() {
-		var jsonRequestPredicate = accept(APPLICATION_JSON)
-				.or(accept(APPLICATION_JSON_UTF8));
-		var sseRequestPredicate = accept(TEXT_EVENT_STREAM);
+
+		// <4>
+		var jsonRP = accept(jsonMT).or(accept(jsonUtf8MT));
+		var sseRP = accept(sseMT);
+
+		// <5>
 		return route() //
-				.nest(path("/nested"), builder -> builder
-						.nest(jsonRequestPredicate,
-								nestedBuilder -> nestedBuilder
-										.GET("", this.noPathVariableHandlerFunction)
-										.GET("/{pv}", this.pathVariableHandlerFunction))
-						.nest(sseRequestPredicate, nestedBuilder -> nestedBuilder.GET("",
-								this.sseHandlerFunction)))
+				.nest(path("/nested"), builder -> builder //
+						.nest(jsonRP, nestedBuilder -> nestedBuilder //
+								.GET("", this.noPathVariableHF) //
+								.GET("/{pv}", this.pathVariableHF) //
+						) //
+						.nest(sseRP, nestedBuilder -> nestedBuilder.GET("", this.sseHF)))
 				.build();
 	}
 

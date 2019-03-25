@@ -21,8 +21,8 @@ class SimpleFunctionalEndpointConfiguration {
 		return route() //
 				.GET("/hello/{name}", request -> { // <3>
 					var namePathVariable = request.pathVariable("name");
-					var message = Mono.just(String.format("Hello %s!", namePathVariable));
-					return ok().body(message, String.class);
+					var message = String.format("Hello %s!", namePathVariable);
+					return ok().syncBody(message);
 				}) //
 				.GET("/hodor", handlerFunction) // <4>
 				.GET("/sup", handlerFunction::handle) // <5>
