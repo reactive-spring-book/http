@@ -6,7 +6,7 @@ import org.springframework.web.reactive.function.server.support.ServerRequestWra
 
 import java.net.URI;
 
-public class LowercaseUriServerRequestWrapper extends ServerRequestWrapper {
+class LowercaseUriServerRequestWrapper extends ServerRequestWrapper {
 
 	public LowercaseUriServerRequestWrapper(ServerRequest target) {
 		super(target);

@@ -25,13 +25,11 @@ public class LowercaseWebConfigurationTest {
 
 	void test(String path, String match) {
 
-		this.client
-			.get()
-			.uri("http://localhost:8080/" + path)
-			.exchange()
-			.expectStatus().isOk()
-			.expectHeader().contentTypeCompatibleWith(MediaType.TEXT_PLAIN)
-			.expectBody(String.class).value(message -> message.equalsIgnoreCase(String.format(LowercaseWebConfiguration.FMT, match)));
+		this.client.get().uri("http://localhost:8080/" + path).exchange().expectStatus()
+				.isOk().expectHeader().contentTypeCompatibleWith(MediaType.TEXT_PLAIN)
+				.expectBody(String.class).value(message -> message.equalsIgnoreCase(
+						String.format(LowercaseWebConfiguration.FMT, match)));
 
 	}
+
 }

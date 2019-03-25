@@ -8,7 +8,6 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
@@ -16,16 +15,18 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 class SimpleFunctionalEndpointConfiguration {
 
 	@Bean
-	RouterFunction<ServerResponse> greetingsRoutes(
-			GreetingsHandlerFunction handlerFunction) { // <1>
+	RouterFunction<ServerResponse> simple(GreetingsHandlerFunction handlerFunction) { // <1>
 
 		// <2>
-		return route(GET("/hello/{name}"), request -> { // <3>
-			var namePathVariable = request.pathVariable("name");
-			var message = Mono.just(String.format("Hello %s!", namePathVariable));
-			return ok().body(message, String.class);
-		}).andRoute(GET("/hodor"), handlerFunction) // <4>
-				.andRoute(GET("/sup"), handlerFunction::handle); // <5>
+		return route() //
+				.GET("/hello/{name}", request -> { // <3>
+					var namePathVariable = request.pathVariable("name");
+					var message = Mono.just(String.format("Hello %s!", namePathVariable));
+					return ok().body(message, String.class);
+				}) //
+				.GET("/hodor", handlerFunction) // <4>
+				.GET("/sup", handlerFunction::handle) // <5>
+				.build();
 	}
 
 	@Bean
