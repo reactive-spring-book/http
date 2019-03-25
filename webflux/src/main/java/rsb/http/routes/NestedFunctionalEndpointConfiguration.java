@@ -22,15 +22,16 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 @Configuration
 class NestedFunctionalEndpointConfiguration {
 
-	private HandlerFunction<ServerResponse> pathVariableHandlerFunction = request -> ok()
-			.syncBody(greet(Optional.of(request.pathVariable("pv"))));
+	private HandlerFunction<ServerResponse> pathVariableHandlerFunction = //
+			request -> ok().syncBody(greet(Optional.of(request.pathVariable("pv"))));
 
-	private HandlerFunction<ServerResponse> noPathVariableHandlerFunction = request -> ok()
-			.syncBody(greet(Optional.ofNullable(null)));
+	private HandlerFunction<ServerResponse> noPathVariableHandlerFunction = //
+			request -> ok().syncBody(greet(Optional.ofNullable(null)));
 
-	private HandlerFunction<ServerResponse> sseHandlerFunction = request -> ok() //
-			.contentType(TEXT_EVENT_STREAM) //
-			.body(IntervalMessageProducer.produce(), String.class);
+	private HandlerFunction<ServerResponse> sseHandlerFunction = //
+			request -> ok() //
+					.contentType(TEXT_EVENT_STREAM) //
+					.body(IntervalMessageProducer.produce(), String.class);
 
 	@Bean
 	RouterFunction<ServerResponse> nested() {
@@ -50,7 +51,8 @@ class NestedFunctionalEndpointConfiguration {
 
 	private static Map<String, String> greet(Optional<String> name) {
 		var fmt = "Hello %s!";
-		var message = name.map(realizedName -> String.format(fmt, realizedName)) //
+		var message = name //
+				.map(realizedName -> String.format(fmt, realizedName)) //
 				.orElse(String.format(fmt, "world"));
 		return Map.of("message", message);
 	}
