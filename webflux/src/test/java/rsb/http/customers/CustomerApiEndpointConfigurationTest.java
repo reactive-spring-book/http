@@ -7,8 +7,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @WebFluxTest
 @RunWith(SpringRunner.class)
-@Import({ CustomerEndpointConfiguration.class, CustomerHandler.class })
-public class CustomerEndpointConfigurationTest extends AbstractRestBaseClass {
+@Import({ CustomerApiEndpointConfiguration.class, CustomerHandler.class })
+public class CustomerApiEndpointConfigurationTest extends AbstractRestBaseClass {
 
 	@Override
 	String rootUrl() {
