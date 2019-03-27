@@ -9,7 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @RunWith(SpringRunner.class)
-@WebFluxTest({ SimpleFunctionalEndpointConfiguration.class })
+@WebFluxTest({ SimpleFunctionalEndpointConfiguration.class,
+		GreetingsHandlerFunction.class })
 public class SimpleFunctionalEndpointConfigurationTest {
 
 	@Autowired

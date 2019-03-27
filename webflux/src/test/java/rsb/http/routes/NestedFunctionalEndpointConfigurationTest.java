@@ -17,7 +17,7 @@ import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
 @WebFluxTest
 @RunWith(SpringRunner.class)
-@Import(NestedFunctionalEndpointConfiguration.class)
+@Import({ NestedFunctionalEndpointConfiguration.class, NestedHandler.class })
 public class NestedFunctionalEndpointConfigurationTest {
 
 	@Autowired

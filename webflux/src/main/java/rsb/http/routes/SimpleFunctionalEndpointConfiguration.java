@@ -2,6 +2,7 @@ package rsb.http.routes;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -15,7 +16,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 class SimpleFunctionalEndpointConfiguration {
 
 	@Bean
-	RouterFunction<ServerResponse> simple(GreetingsHandlerFunction handlerFunction) { // <1>
+	RouterFunction<ServerResponse> simple(GreetingsHandlerFunction handler) { // <1>
 
 		// <2>
 		return route() //
@@ -24,23 +25,9 @@ class SimpleFunctionalEndpointConfiguration {
 					var message = String.format("Hello %s!", namePathVariable);
 					return ok().syncBody(message);
 				}) //
-				.GET("/hodor", handlerFunction) // <4>
-				.GET("/sup", handlerFunction::handle) // <5>
+				.GET("/hodor", handler) // <4>
+				.GET("/sup", handler::handle) // <5>
 				.build();
-	}
-
-	@Bean
-	GreetingsHandlerFunction greetingsHandlerFunction() {
-		return new GreetingsHandlerFunction();
-	}
-
-}
-
-class GreetingsHandlerFunction implements HandlerFunction<ServerResponse> {
-
-	@Override
-	public Mono<ServerResponse> handle(ServerRequest request) {
-		return ok().syncBody("Hodor!");
 	}
 
 }
