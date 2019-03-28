@@ -22,7 +22,7 @@ class CustomerHandler {
 
 	Mono<ServerResponse> handleFindAll(ServerRequest request) {
 		var all = this.repository.findAll();// <1>
-		return ok().body(all, Customer.class);//<2>
+		return ok().body(all, Customer.class);// <2>
 	}
 
 	Mono<ServerResponse> handleFindCustomerById(ServerRequest request) {
@@ -33,8 +33,9 @@ class CustomerHandler {
 
 	Mono<ServerResponse> handleCreateCustomer(ServerRequest request) {
 		return request.bodyToMono(Customer.class) //
-			.flatMap(repository::save) //
-			.flatMap(saved -> created(URI.create("/fn/customers/" + saved.getId())).build());
+				.flatMap(repository::save) //
+				.flatMap(saved -> created(URI.create("/fn/customers/" + saved.getId()))
+						.build());
 	}
 
 }

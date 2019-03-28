@@ -18,9 +18,8 @@ public class CustomerController {
 	@GetMapping(value = "/rc/customers.php")
 	String customersView(Model model) {
 		var all = repository.findAll();
-		model.addAllAttributes(Map.of(
-			"type", "Controller" ,
-			"customers", all));
+		model.addAllAttributes(Map.of("type", "Controller", "customers", all));
 		return "customers";
 	}
+
 }
