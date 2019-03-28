@@ -8,53 +8,45 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.UUID;
 
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+import static org.springframework.web.reactive.function.server.ServerResponse.badRequest;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Log4j2
 @Configuration
 class LowercaseWebConfiguration {
 
-	// for testing
-	static String FMT = "Hello, %s!";
+	@Bean
+	RouterFunction<ServerResponse> routerFunctionFilters() {
+		var uuidKey = UUID.class.getName();
+		return route() // <1>
+				.GET("/hi/{name}", this::handle) //
+				.GET("/hello/{name}", this::handle) //
+				.filter((req, next) -> {// <2>
+					log.info(".filter(): before");
+					var reply = next.handle(req);
+					log.info(".filter(): after");
+					return reply;
+				}) //
+				.before(request -> {
+					log.info(".before()"); // <3>
+					request.attributes().put(uuidKey, UUID.randomUUID());
+					return request;
+				}) //
+				.after((serverRequest, serverResponse) -> {
+					log.info(".after()"); // <4>
+					log.info("UUID: " + serverRequest.attributes().get(uuidKey));
+					return serverResponse;
+				}) //
+				.onError(NullPointerException.class, (e, request) -> badRequest().build()) // <5>
+				.build();
+	}
 
 	Mono<ServerResponse> handle(ServerRequest serverRequest) {
-		return ok().syncBody(String.format(FMT, serverRequest.pathVariable("name")));
-	}
-
-	@Bean
-	RouterFunction<ServerResponse> routes() {
-
-		var before = new Function<ServerRequest, ServerRequest>() {
-
-			@Override
-			public ServerRequest apply(ServerRequest serverRequest) {
-				log.info("request is arriving @ " + Instant.now());
-				return serverRequest;
-			}
-		};
-
-		var after = new BiFunction<ServerRequest, ServerResponse, ServerResponse>() {
-
-			@Override
-			public ServerResponse apply(ServerRequest serverRequest,
-					ServerResponse serverResponse) {
-				log.info("request is leaving @ " + Instant.now());
-				return serverResponse;
-			}
-		};
-
-		return route().before(before).GET("/hi/{name}", this::handle)
-				.GET("/hello/{name}", this::handle).after(after).build();
-	}
-
-	@Bean
-	LowercaseWebFilter lowercaseWebFilter() {
-		return new LowercaseWebFilter();
+		return ok().syncBody(
+				String.format("Hello, %s!", serverRequest.pathVariable("name")));
 	}
 
 }

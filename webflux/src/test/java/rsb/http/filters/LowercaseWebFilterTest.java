@@ -11,8 +11,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @RunWith(SpringRunner.class)
 @WebFluxTest
-@Import(LowercaseWebConfiguration.class)
-public class LowercaseWebConfigurationTest {
+@Import({ LowercaseWebConfiguration.class, LowercaseWebFilter.class })
+public class LowercaseWebFilterTest {
 
 	@Autowired
 	private WebTestClient client;
@@ -25,10 +25,13 @@ public class LowercaseWebConfigurationTest {
 
 	void test(String path, String match) {
 
-		this.client.get().uri("http://localhost:8080/" + path).exchange().expectStatus()
-				.isOk().expectHeader().contentTypeCompatibleWith(MediaType.TEXT_PLAIN)
-				.expectBody(String.class).value(message -> message.equalsIgnoreCase(
-						String.format(LowercaseWebConfiguration.FMT, match)));
+		this.client //
+				.get() //
+				.uri("http://localhost:8080/" + path) //
+				.exchange().expectStatus().isOk() //
+				.expectHeader().contentTypeCompatibleWith(MediaType.TEXT_PLAIN) //
+				.expectBody(String.class).value(message -> message
+						.equalsIgnoreCase(String.format("Hello, %s!", match)));
 
 	}
 
