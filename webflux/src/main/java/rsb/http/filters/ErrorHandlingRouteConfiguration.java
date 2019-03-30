@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 import java.util.Set;
 
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+import static org.springframework.web.reactive.function.server.ServerResponse.notFound;
 
 @Configuration
 class ErrorHandlingRouteConfiguration {
@@ -18,7 +19,8 @@ class ErrorHandlingRouteConfiguration {
 	@Bean
 	RouterFunction<ServerResponse> errors() {
 		var productIdPathVariable = "productId";
-		return route().GET("/products/{" + productIdPathVariable + "}", request -> {
+		return route() //
+			.GET("/products/{" + productIdPathVariable + "}", request -> {
 			var productId = request.pathVariable(productIdPathVariable);
 			if (!Set.of("1", "2").contains(productId)) {
 				return ServerResponse.ok().syncBody(new Product(productId));
@@ -26,9 +28,9 @@ class ErrorHandlingRouteConfiguration {
 			else {
 				return Mono.error(new ProductNotFoundException(productId));
 			}
-		}).filter((request, next) -> next.handle(request) //
-				.onErrorResume(ProductNotFoundException.class,
-						pnfe -> ServerResponse.notFound().build()))
+		}) //
+			.filter((request, next) -> next.handle(request) // <1>
+				.onErrorResume(ProductNotFoundException.class, pnfe -> notFound().build())) // <2>
 				.build();
 	}
 
@@ -39,7 +41,6 @@ class ErrorHandlingRouteConfiguration {
 class Product {
 
 	private final String id;
-
 }
 
 @Data
