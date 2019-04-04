@@ -20,17 +20,18 @@ class ErrorHandlingRouteConfiguration {
 	RouterFunction<ServerResponse> errors() {
 		var productIdPathVariable = "productId";
 		return route() //
-			.GET("/products/{" + productIdPathVariable + "}", request -> {
-			var productId = request.pathVariable(productIdPathVariable);
-			if (!Set.of("1", "2").contains(productId)) {
-				return ServerResponse.ok().syncBody(new Product(productId));
-			}
-			else {
-				return Mono.error(new ProductNotFoundException(productId));
-			}
-		}) //
-			.filter((request, next) -> next.handle(request) // <1>
-				.onErrorResume(ProductNotFoundException.class, pnfe -> notFound().build())) // <2>
+				.GET("/products/{" + productIdPathVariable + "}", request -> {
+					var productId = request.pathVariable(productIdPathVariable);
+					if (!Set.of("1", "2").contains(productId)) {
+						return ServerResponse.ok().syncBody(new Product(productId));
+					}
+					else {
+						return Mono.error(new ProductNotFoundException(productId));
+					}
+				}) //
+				.filter((request, next) -> next.handle(request) // <1>
+						.onErrorResume(ProductNotFoundException.class,
+								pnfe -> notFound().build())) // <2>
 				.build();
 	}
 
@@ -41,6 +42,7 @@ class ErrorHandlingRouteConfiguration {
 class Product {
 
 	private final String id;
+
 }
 
 @Data

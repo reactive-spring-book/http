@@ -25,8 +25,7 @@ class NestedFunctionalEndpointConfiguration {
 								.GET("", nestedHandler::noPathVariable) //
 								.GET("/{pv}", nestedHandler::pathVariable) //
 						) //
-						.nest(sseRP, nestedBuilder -> nestedBuilder.GET("",
-								nestedHandler::sse)) //
+						.add(route(sseRP, nestedHandler::sse)) //
 				).build();
 	}
 
