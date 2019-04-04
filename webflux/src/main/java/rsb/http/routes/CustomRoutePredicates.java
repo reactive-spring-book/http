@@ -21,8 +21,9 @@ import static rsb.http.routes.CaseInsensitiveRequestPredicate.i;
 @Configuration
 class CustomRoutePredicates {
 
-	private final HandlerFunction<ServerResponse> handler = request -> ok()
-			.syncBody("Hello, " + request.queryParam("name").orElse("world") + "!");
+	private final HandlerFunction<ServerResponse> handler = //
+		request -> ok().syncBody(
+			"Hello, " + request.queryParam("name").orElse("world") + "!");
 
 	@Bean
 	RouterFunction<ServerResponse> customRequestPredicates() {
