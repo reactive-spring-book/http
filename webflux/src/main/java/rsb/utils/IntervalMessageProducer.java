@@ -24,7 +24,7 @@ public abstract class IntervalMessageProducer {
 	private static Flux<CountAndString> produceCountAndStrings() {
 		var counter = new AtomicLong();
 
-		return Flux.interval(Duration.ofSeconds(1)) //
+		return Flux.interval(Duration.ofSeconds(1)) // <1> 
 				.map(i -> {
 					long nextValue = counter.incrementAndGet();
 					return new CountAndString("# " + nextValue, nextValue);
