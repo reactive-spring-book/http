@@ -16,17 +16,20 @@ class NestedFunctionalEndpointConfiguration {
 	@Bean
 	RouterFunction<ServerResponse> nested(NestedHandler nestedHandler) {
 
+		// <1>
 		var jsonRP = accept(APPLICATION_JSON).or(accept(APPLICATION_JSON_UTF8));
 		var sseRP = accept(TEXT_EVENT_STREAM);
 
 		return route() //
-				.nest(path("/nested"), builder -> builder //
-						.nest(jsonRP, nestedBuilder -> nestedBuilder //
-								.GET("", nestedHandler::noPathVariable) //
-								.GET("/{pv}", nestedHandler::pathVariable) //
-						) //
-						.add(route(sseRP, nestedHandler::sse)) //
-				).build();
+			.nest(path("/nested"), builder -> builder //
+					.nest(jsonRP, nestedBuilder -> nestedBuilder //
+						.GET("/{pv}", nestedHandler::pathVariable) // <2>
+						.GET("", nestedHandler::noPathVariable) // <3>
+					)
+					.add(route(sseRP, nestedHandler::sse)) // <4>
+			) //
+			.build();
+
 	}
 
 }

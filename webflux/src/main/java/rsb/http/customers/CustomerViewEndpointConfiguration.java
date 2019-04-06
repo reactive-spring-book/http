@@ -15,11 +15,13 @@ class CustomerViewEndpointConfiguration {
 	@Bean
 	RouterFunction<ServerResponse> customerViews(CustomerRepository repository) {
 
-		return route().GET("/fn/customers.php", r -> {
-			var all = repository.findAll();
-			var map = Map.of("customers", all, "type", "Functional Reactive");
-			return ServerResponse.ok().render("customers", map);
-		}).build();
+		return route() //
+				.GET("/fn/customers.php", r -> {
+					var all = repository.findAll();
+					var map = Map.of("customers", all, "type", "Functional Reactive");
+					return ServerResponse.ok().render("customers", map);
+				}) //
+				.build();
 	}
 
 }
