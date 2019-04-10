@@ -7,40 +7,7 @@
     </title>
 </head>
 <body>
-
-<a href="#" id="close"> Close Session </a>
-
-<script>
-
-    function log(msg) {
-        const messagesDiv = document.getElementById('messages');
-        const elem = document.createElement('div');
-        const txt = document.createTextNode(msg);
-        elem.appendChild(txt);
-        messagesDiv.append(elem);
-    }
-
-    let websocket = null;
-
-    document
-        .getElementById('close')
-        .addEventListener('click', (evt) => {
-        evt.preventDefault();
-    websocket.close();
-    return false;
-    });
-
-    window
-        .addEventListener('load', (e) => {
-        websocket = new WebSocket('ws://localhost:8080/ws/messages');
-    websocket.addEventListener('message', (e) => {
-        let msg = e.data;
-    log(msg);
-    websocket.send(msg + ' reply');
-    });
-
-    });
-</script>
+<script src="/sse.js"></script>
 <div id="messages"></div>
 </body>
 </html>

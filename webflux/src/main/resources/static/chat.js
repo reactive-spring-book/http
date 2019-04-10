@@ -18,9 +18,6 @@ window
             websocket.send(JSON.stringify({'text': value.trim()}));
         }
 
-        window.addEventListener('beforeunload', function (e) {
-        });
-
         message.addEventListener('keydown', function (e) {
             var key = e.key;
             if (key === 'Enter') {
