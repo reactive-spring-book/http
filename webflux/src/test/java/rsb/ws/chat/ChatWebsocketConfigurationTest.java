@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
@@ -23,8 +24,11 @@ import java.util.ArrayList;
 @Log4j2
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { HttpApplication.class, ChatWebsocketConfiguration.class,
-		WebsocketConfiguration.class }, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+		WebsocketConfiguration.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ChatWebsocketConfigurationTest {
+
+	@LocalServerPort
+	private int port;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -43,7 +47,7 @@ public class ChatWebsocketConfigurationTest {
 	public void chat() {
 
 		var message = new Message(null, "Hello, world!", null);
-		var uri = URI.create("ws://localhost:8080/ws/chat");
+		var uri = URI.create("ws://localhost:" + this.port + "/ws/chat");
 		var lists = new ArrayList<Message>();
 
 		var out = new ReactorNettyWebSocketClient() //
