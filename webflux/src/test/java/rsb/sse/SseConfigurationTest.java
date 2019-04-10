@@ -5,15 +5,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.test.StepVerifier;
+import rsb.HttpApplication;
 
 @Log4j2
 @WebFluxTest
+@Import(SseConfiguration.class)
 @RunWith(SpringRunner.class)
-public class SseControllerTest {
+public class SseConfigurationTest {
 
 	@Autowired
 	private WebTestClient client;

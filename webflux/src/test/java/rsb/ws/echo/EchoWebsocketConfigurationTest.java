@@ -5,11 +5,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
 import reactor.test.StepVerifier;
-import rsb.ws.WsApplication;
+import rsb.HttpApplication;
+import rsb.ws.WebsocketConfiguration;
 
 import java.net.URI;
 import java.time.Duration;
@@ -17,16 +19,19 @@ import java.util.ArrayList;
 
 @Log4j2
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {
-		WsApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = { HttpApplication.class,
+		WebsocketConfiguration.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EchoWebsocketConfigurationTest {
+
+	@LocalServerPort
+	private int port;
 
 	@Test
 	public void testNotificationsOnUpdates() throws Exception {
 		var socketClient = new ReactorNettyWebSocketClient();
 		int max = 2;
 		var values = new ArrayList<>();
-		var uri = URI.create("ws://localhost:8080/ws/messages");
+		var uri = URI.create("ws://localhost:" + this.port + "/ws/messages");
 		var execute = socketClient.execute(uri, session -> {
 			var map = session.receive() //
 					.map(WebSocketMessage::getPayloadAsText) //

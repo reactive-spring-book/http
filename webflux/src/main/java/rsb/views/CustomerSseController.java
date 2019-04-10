@@ -9,7 +9,7 @@ import rsb.utils.IntervalMessageProducer;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 
 @Controller
-class CustomerController {
+class CustomerSseController {
 
 	@GetMapping("/ticker")
 	String initialView() {

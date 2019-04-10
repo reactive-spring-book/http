@@ -21,14 +21,13 @@ class NestedFunctionalEndpointConfiguration {
 		var sseRP = accept(TEXT_EVENT_STREAM);
 
 		return route() //
-			.nest(path("/nested"), builder -> builder //
-					.nest(jsonRP, nestedBuilder -> nestedBuilder //
-						.GET("/{pv}", nestedHandler::pathVariable) // <2>
-						.GET("", nestedHandler::noPathVariable) // <3>
-					)
-					.add(route(sseRP, nestedHandler::sse)) // <4>
-			) //
-			.build();
+				.nest(path("/nested"), builder -> builder //
+						.nest(jsonRP, nestedBuilder -> nestedBuilder //
+								.GET("/{pv}", nestedHandler::pathVariable) // <2>
+								.GET("", nestedHandler::noPathVariable) // <3>
+						).add(route(sseRP, nestedHandler::sse)) // <4>
+				) //
+				.build();
 
 	}
 

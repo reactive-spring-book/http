@@ -29,7 +29,7 @@ import java.util.HashSet;
 @RunWith(SpringRunner.class)
 @WebFluxTest
 @AutoConfigureWebTestClient
-public class CustomerControllerTest {
+public class CustomerSseControllerTest {
 
 	@Test
 	public void thymeleafSseView() throws Exception {

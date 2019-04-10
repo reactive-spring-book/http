@@ -13,7 +13,8 @@ import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-import rsb.ws.WsApplication;
+import rsb.HttpApplication;
+import rsb.ws.WebsocketConfiguration;
 
 import java.net.URI;
 import java.time.Duration;
@@ -21,8 +22,8 @@ import java.util.ArrayList;
 
 @Log4j2
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {
-		WsApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = { HttpApplication.class, ChatWebsocketConfiguration.class,
+		WebsocketConfiguration.class }, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class ChatWebsocketConfigurationTest {
 
 	@Autowired
