@@ -1,11 +1,11 @@
 package rsb.views;
 
-import lombok.extern.log4j.Log4j2;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebFlux;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ import java.nio.charset.Charset;
 import java.util.HashSet;
 
 @RunWith(SpringRunner.class)
-@WebFluxTest
+@AutoConfigureWebFlux
 @AutoConfigureWebTestClient
 public class TickerSseControllerTest {
 

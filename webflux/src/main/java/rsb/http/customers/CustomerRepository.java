@@ -1,5 +1,6 @@
 package rsb.http.customers;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -9,7 +10,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-class CustomerRepository {
+public class CustomerRepository {
 
 	private final Map<String, Customer> data = new ConcurrentHashMap<>();
 

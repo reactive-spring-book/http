@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.Map;
 
 @Controller
-public class CustomerController {
+class CustomerController {
 
 	private final CustomerRepository repository;
 

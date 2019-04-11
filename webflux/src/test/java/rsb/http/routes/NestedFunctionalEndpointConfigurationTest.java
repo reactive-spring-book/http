@@ -15,9 +15,8 @@ import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
-@WebFluxTest
+@WebFluxTest({ NestedFunctionalEndpointConfiguration.class, NestedHandler.class })
 @RunWith(SpringRunner.class)
-@Import({ NestedFunctionalEndpointConfiguration.class, NestedHandler.class })
 public class NestedFunctionalEndpointConfigurationTest {
 
 	@Autowired
