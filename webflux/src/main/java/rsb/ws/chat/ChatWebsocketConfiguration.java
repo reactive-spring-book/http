@@ -2,14 +2,12 @@ package rsb.ws.chat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
-import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.SignalType;
 
@@ -20,29 +18,21 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
-@Log4j2
 @Configuration
 class ChatWebsocketConfiguration {
 
+	// <1>
 	ChatWebsocketConfiguration(ObjectMapper objectMapper) {
 		this.objectMapper = objectMapper;
 	}
 
+	// <2>
 	private final Map<String, Connection> sessions = new ConcurrentHashMap<>();
 
+	// <3>
 	private final BlockingQueue<Message> messages = new LinkedBlockingQueue<>();
 
 	private final ObjectMapper objectMapper;
-
-	@SneakyThrows
-	private Message messageFromJson(String json) {
-		return this.objectMapper.readValue(json, Message.class);
-	}
-
-	@SneakyThrows
-	private String jsonFromMessage(Message msg) {
-		return this.objectMapper.writeValueAsString(msg);
-	}
 
 	@Bean
 	WebSocketHandler chatWsh() {
@@ -101,6 +91,16 @@ class ChatWebsocketConfiguration {
 				this.setOrder(2);
 			}
 		};
+	}
+
+	@SneakyThrows
+	private Message messageFromJson(String json) {
+		return this.objectMapper.readValue(json, Message.class);
+	}
+
+	@SneakyThrows
+	private String jsonFromMessage(Message msg) {
+		return this.objectMapper.writeValueAsString(msg);
 	}
 
 }
