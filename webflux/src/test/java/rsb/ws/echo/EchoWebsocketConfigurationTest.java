@@ -31,7 +31,7 @@ public class EchoWebsocketConfigurationTest {
 		var socketClient = new ReactorNettyWebSocketClient();
 		var max = 2;
 		var values = new ArrayList<>();
-		var uri = URI.create("ws://localhost:" + this.port + "/ws/messages");
+		var uri = URI.create("ws://localhost:" + this.port + "/ws/echo");
 		var execute = socketClient.execute(uri, session -> {
 			var map = session.receive() //
 					.map(WebSocketMessage::getPayloadAsText) //
