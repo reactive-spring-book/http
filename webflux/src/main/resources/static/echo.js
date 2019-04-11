@@ -17,10 +17,11 @@ document
     });
 
 window.addEventListener('load', function (e) {
+    //<1>
     websocket = new WebSocket('ws://localhost:8080/ws/echo');
     websocket.addEventListener('message', function (e) {
         var msg = e.data;
         log(msg);
-        websocket.send(msg + ' reply');
+        websocket.send(msg + ' reply'); //<2>
     });
 });
