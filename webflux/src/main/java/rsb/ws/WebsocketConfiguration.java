@@ -21,22 +21,6 @@ public class WebsocketConfiguration {
 		return new WebSocketHandlerAdapter();
 	}
 
-	@Bean
-	HandlerMapping handlerMapping(EchoWebsocketConfiguration ewc,
-			ChatWebsocketConfiguration cwc) {
-		return new SimpleUrlHandlerMapping() {
-			{
-
-				var endpointsToWSH = Map.of( //
-						"/ws/messages", ewc.echoWsh(), //
-						"/ws/chat", cwc.chatWsh() //
-				);
-				this.setUrlMap(endpointsToWSH);
-				this.setOrder(10);
-			}
-		};
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(WebsocketConfiguration.class, args);
 	}

@@ -8,12 +8,12 @@ function log(msg) {
 
 window.addEventListener('load', function (e) {
     log("window has loaded.");
-    var eventSource = new EventSource('http://localhost:8080/sse/10');
+    var eventSource = new EventSource('http://localhost:8080/sse/10'); //<1>
     eventSource.addEventListener('message', function (e) {
         e.preventDefault();
         log(e.data);
     });
-    eventSource.addEventListener('error', function (e) {
+    eventSource.addEventListener('error', function (e) { //<2>
         e.preventDefault();
         log('closing the EventSource...')
         eventSource.close();

@@ -5,6 +5,8 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.HandlerMapping;
+import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import reactor.core.publisher.Flux;
@@ -42,7 +44,7 @@ public class ChatWebsocketConfiguration {
 	}
 
 	@Bean
-	public WebSocketHandler chatWsh() {
+	WebSocketHandler chatWsh() {
 
 		// <1>
 		var executor = Executors.newSingleThreadExecutor();
@@ -87,6 +89,16 @@ public class ChatWebsocketConfiguration {
 					.map(session::textMessage);
 
 			return session.send(out).and(in);
+		};
+	}
+
+	@Bean
+	HandlerMapping chatHm() {
+		return new SimpleUrlHandlerMapping() {
+			{
+				this.setUrlMap(Map.of("/ws/chat", chatWsh()));
+				this.setOrder(2);
+			}
 		};
 	}
 
