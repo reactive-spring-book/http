@@ -7,18 +7,17 @@ import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
-import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.SignalType;
 import rsb.utils.IntervalMessageProducer;
 
 import java.util.Map;
-import java.util.function.Consumer;
 
 @Log4j2
 @Configuration
 class EchoWebsocketConfiguration {
 
+	// <1>
 	@Bean
 	HandlerMapping echoHm() {
 		return new SimpleUrlHandlerMapping() {
@@ -29,39 +28,29 @@ class EchoWebsocketConfiguration {
 		};
 	}
 
+	// <2>
 	@Bean
 	WebSocketHandler echoWsh() {
-		return session -> {
+		return session -> { // <3>
 
 			Flux<WebSocketMessage> out = IntervalMessageProducer //
 					.produce() //
 					.doOnNext(log::info) //
-					.map(session::textMessage) //
-					.doFinally(consumer("outbound connection"));
+					.map(session::textMessage) // <4>
+					.doFinally(
+							signalType -> log.info("outbound connection: " + signalType)); // <5>
 
 			Flux<String> in = session //
 					.receive() //
-					.map(WebSocketMessage::getPayloadAsText) //
-					.doFinally(consumer("inbound connection", st -> {
-						if (st.equals(SignalType.ON_COMPLETE)) {
+					.map(WebSocketMessage::getPayloadAsText) // <6>
+					.doFinally(signalType -> {
+						log.info("inbound connection: " + signalType);
+						if (signalType.equals(SignalType.ON_COMPLETE)) {
 							session.close().subscribe();
 						}
-					})) //
-					.doOnNext(log::info);
-
-			return session //
-					.send(out) //
-					.and(in); //
+					}).doOnNext(log::info);
+			return session.send(out).and(in);// <7>
 		};
-	}
-
-	private static Consumer<SignalType> consumer(String msg,
-			Consumer<SignalType> consumer) {
-		return consumer(msg).andThen(consumer);
-	}
-
-	private static Consumer<SignalType> consumer(String msg) {
-		return signalType -> log.info(msg + " : " + signalType);
 	}
 
 }
