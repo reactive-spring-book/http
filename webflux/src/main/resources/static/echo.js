@@ -17,7 +17,7 @@ document
     });
 
 window.addEventListener('load', function (e) {
-    websocket = new WebSocket('ws://localhost:8080/ws/messages');
+    websocket = new WebSocket('ws://localhost:8080/ws/echo');
     websocket.addEventListener('message', function (e) {
         var msg = e.data;
         log(msg);

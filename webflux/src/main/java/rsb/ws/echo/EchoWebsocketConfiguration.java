@@ -24,7 +24,7 @@ class EchoWebsocketConfiguration {
 		return new SimpleUrlHandlerMapping() {
 			{
 				this.setOrder(1);
-				this.setUrlMap(Map.of("/ws/messages", echoWsh()));
+				this.setUrlMap(Map.of("/ws/echo", echoWsh()));
 			}
 		};
 	}
