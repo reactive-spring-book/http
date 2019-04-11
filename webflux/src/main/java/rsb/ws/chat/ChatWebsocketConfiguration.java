@@ -9,6 +9,7 @@ import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
+import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.SignalType;
 
@@ -21,7 +22,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @Log4j2
 @Configuration
-public class ChatWebsocketConfiguration {
+class ChatWebsocketConfiguration {
 
 	ChatWebsocketConfiguration(ObjectMapper objectMapper) {
 		this.objectMapper = objectMapper;
@@ -35,12 +36,12 @@ public class ChatWebsocketConfiguration {
 
 	@SneakyThrows
 	private Message messageFromJson(String json) {
-		return objectMapper.readValue(json, Message.class);
+		return this.objectMapper.readValue(json, Message.class);
 	}
 
 	@SneakyThrows
 	private String jsonFromMessage(Message msg) {
-		return objectMapper.writeValueAsString(msg);
+		return this.objectMapper.writeValueAsString(msg);
 	}
 
 	@Bean

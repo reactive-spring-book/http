@@ -2,7 +2,6 @@ package rsb.ws.chat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import lombok.extern.log4j.Log4j2;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +20,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 
-@Log4j2
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { HttpApplication.class, ChatWebsocketConfiguration.class,
 		WebsocketConfiguration.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

@@ -7,6 +7,7 @@ import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
+import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.SignalType;
 import rsb.utils.IntervalMessageProducer;
@@ -16,7 +17,7 @@ import java.util.function.Consumer;
 
 @Log4j2
 @Configuration
-public class EchoWebsocketConfiguration {
+class EchoWebsocketConfiguration {
 
 	@Bean
 	HandlerMapping echoHm() {

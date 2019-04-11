@@ -27,9 +27,9 @@ public class EchoWebsocketConfigurationTest {
 	private int port;
 
 	@Test
-	public void testNotificationsOnUpdates() throws Exception {
+	public void testNotificationsOnUpdates() {
 		var socketClient = new ReactorNettyWebSocketClient();
-		int max = 2;
+		var max = 2;
 		var values = new ArrayList<>();
 		var uri = URI.create("ws://localhost:" + this.port + "/ws/messages");
 		var execute = socketClient.execute(uri, session -> {
