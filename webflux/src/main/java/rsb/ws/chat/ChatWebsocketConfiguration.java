@@ -37,10 +37,9 @@ class ChatWebsocketConfiguration {
 	@Bean
 	WebSocketHandler chatWsh() {
 
-		// <1>
-		var executor = Executors.newSingleThreadExecutor();
+		// <4>
 		var messagesToBroadcast = Flux.<Message>create(sink -> {
-			var submit = executor.submit(() -> {
+			var submit = Executors.newSingleThreadExecutor().submit(() -> {
 				while (true) {
 					try {
 						sink.next(this.messages.take());
@@ -52,35 +51,43 @@ class ChatWebsocketConfiguration {
 			});
 			sink.onCancel(() -> submit.cancel(true));
 		}) //
-				.share();
+			.share();
 
-		return session -> {
+		return session -> { // <5>
 
 			var sessionId = session.getId();
 
 			this.sessions.put(sessionId, new Connection(sessionId, session));
 
-			var in = session //
-					.receive() //
-					.map(WebSocketMessage::getPayloadAsText) //
-					.map(this::messageFromJson) //
-					.map(msg -> new Message(sessionId, msg.getText(), new Date())) //
-					.map(x -> {
-						var result = this.messages.offer(x);
-						return result;
-					})//
-					.doFinally(st -> { //
-						if (st.equals(SignalType.ON_COMPLETE)) {//
-							this.sessions.remove(sessionId);//
-						}
-					}); //
+			var in = session // <6>
+				.receive() //
+				.map(WebSocketMessage::getPayloadAsText) //
+				.map(this::messageFromJson) //
+				.map(msg -> new Message(sessionId, msg.getText(), new Date())) //
+				.map(this.messages::offer)//
+				.doFinally(st -> { // <7>
+					if (st.equals(SignalType.ON_COMPLETE)) {//
+						this.sessions.remove(sessionId);//
+					}
+				}); //
 
 			var out = messagesToBroadcast //
-					.map(this::jsonFromMessage)//
-					.map(session::textMessage);
+				.map(this::jsonFromMessage)//
+				.map(session::textMessage);
 
 			return session.send(out).and(in);
 		};
+	}
+
+	// <7>
+	@SneakyThrows
+	private Message messageFromJson(String json) {
+		return this.objectMapper.readValue(json, Message.class);
+	}
+
+	@SneakyThrows
+	private String jsonFromMessage(Message msg) {
+		return this.objectMapper.writeValueAsString(msg);
 	}
 
 	@Bean
@@ -91,16 +98,6 @@ class ChatWebsocketConfiguration {
 				this.setOrder(2);
 			}
 		};
-	}
-
-	@SneakyThrows
-	private Message messageFromJson(String json) {
-		return this.objectMapper.readValue(json, Message.class);
-	}
-
-	@SneakyThrows
-	private String jsonFromMessage(Message msg) {
-		return this.objectMapper.writeValueAsString(msg);
 	}
 
 }

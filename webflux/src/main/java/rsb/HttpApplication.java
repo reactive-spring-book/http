@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HttpApplication {
 
 	public static void main(String args[]) {
-		System.setProperty("spring.main.lazy-initialization", "false");
 		SpringApplication.run(HttpApplication.class, args);
 	}
 
