@@ -25,7 +25,8 @@ class NestedFunctionalEndpointConfiguration {
 						.nest(jsonRP, nestedBuilder -> nestedBuilder //
 								.GET("/{pv}", nestedHandler::pathVariable) // <2>
 								.GET("", nestedHandler::noPathVariable) // <3>
-						).add(route(sseRP, nestedHandler::sse)) // <4>
+						) //
+						.add(route(sseRP, nestedHandler::sse)) // <4>
 				) //
 				.build();
 

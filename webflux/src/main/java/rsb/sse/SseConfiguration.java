@@ -16,15 +16,17 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Configuration
 class SseConfiguration {
 
+	private final String countPathVariable = "count";
+
 	@Bean
 	RouterFunction<ServerResponse> routes() {
 		return route() //
-				.GET("/sse/{count}", this::handleSse) //
+				.GET("/sse/{" + this.countPathVariable + "}", this::handleSse) //
 				.build();
 	}
 
-	private Mono<ServerResponse> handleSse(ServerRequest r) {
-		var countPathVariable = Integer.parseInt(r.pathVariable("count"));
+	Mono<ServerResponse> handleSse(ServerRequest r) {
+		var countPathVariable = Integer.parseInt(r.pathVariable( this.countPathVariable));
 		var publisher = IntervalMessageProducer.produce(countPathVariable)
 				.doOnComplete(() -> log.info("completed"));
 

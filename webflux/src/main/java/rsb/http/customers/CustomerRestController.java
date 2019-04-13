@@ -11,27 +11,27 @@ import java.net.URI;
 @RequestMapping(value = "/rc/customers") // <2>
 class CustomerRestController {
 
-	private final CustomerRepository customerRepository;
+	private final CustomerRepository repository;
 
 	CustomerRestController(CustomerRepository cr) {
-		this.customerRepository = cr;
+		this.repository = cr;
 	}
 
 	@GetMapping("/{id}") // <3>
 	Mono<Customer> byId(@PathVariable("id") String id) {
-		return this.customerRepository.findById(id);
+		return this.repository.findById(id);
 	}
 
 	@GetMapping // <4>
 	Flux<Customer> all() {
-		return this.customerRepository.findAll();
+		return this.repository.findAll();
 	}
 
 	@PostMapping // <5>
 	Mono<ResponseEntity<?>> create(@RequestBody Customer customer) { // <6>
-		return this.customerRepository.save(customer) //
-				.map(body -> ResponseEntity //
-						.created(URI.create("/rc/customers/" + body.getId())) //
+		return this.repository.save(customer)//
+				.map(customerEntity -> ResponseEntity//
+						.created(URI.create("/rc/customers/" + customerEntity.getId())) //
 						.build());
 	}
 

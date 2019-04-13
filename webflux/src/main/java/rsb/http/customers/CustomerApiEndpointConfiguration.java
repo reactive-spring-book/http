@@ -13,8 +13,9 @@ class CustomerApiEndpointConfiguration {
 
 	@Bean
 	RouterFunction<ServerResponse> customerApis(CustomerHandler handler) {
-		return route().nest(path("/fn/customers"),
-				builder -> builder.GET("/{id}", handler::handleFindCustomerById)
+		return route() //
+				.nest(path("/fn/customers"), builder -> builder //
+						.GET("/{id}", handler::handleFindCustomerById)
 						.GET("", handler::handleFindAll)
 						.POST("", handler::handleCreateCustomer))
 				.build();

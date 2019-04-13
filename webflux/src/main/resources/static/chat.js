@@ -27,7 +27,7 @@ window
             }
         });
 
-            
+
         button.addEventListener('click', function (e) {
             send();
             e.preventDefault();
