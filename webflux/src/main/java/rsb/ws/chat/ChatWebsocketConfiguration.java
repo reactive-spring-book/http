@@ -71,7 +71,7 @@ class ChatWebsocketConfiguration {
 						}
 					}); //
 
-			var out = messagesToBroadcast //
+			var out = messagesToBroadcast // <8>
 					.map(this::jsonFromMessage)//
 					.map(session::textMessage);
 
@@ -79,7 +79,7 @@ class ChatWebsocketConfiguration {
 		};
 	}
 
-	// <7>
+	// <9>
 	@SneakyThrows
 	private Message messageFromJson(String json) {
 		return this.objectMapper.readValue(json, Message.class);
