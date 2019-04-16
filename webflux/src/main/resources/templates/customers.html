@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml"><!--1-->
 <head>
     <title>
         A Reactive Thymeleaf View
@@ -7,11 +7,11 @@
 </head>
 <body>
 
-<h1>  <span th:text="${type}">Type of View</span>
+<h1>  <span th:text="${type}">Type of View</span><!--2-->
     Customers
 </h1>
 <ol>
-    <li th:each="customer : ${customers}">
+    <li th:each="customer : ${customers}"><!--3-->
         <span style="font-size: smaller" th:text="${customer.id}">ID</span>
         <span th:text="${customer.name}">Name</span>
     </li>
