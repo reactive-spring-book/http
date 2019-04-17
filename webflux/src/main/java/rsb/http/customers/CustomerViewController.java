@@ -16,10 +16,11 @@ class CustomerViewController {
 	}
 
 	@GetMapping("/c/customers.php")
-	String customersView(Model model) {//<1>
+	String customersView(Model model) {// <1>
 		var modelMap = Map.of("customers", repository.findAll(), //
-			"type", "@Controller"); //<2>
-		model.addAllAttributes(modelMap);//<3>
-		return "customers";//<4>
+				"type", "@Controller"); // <2>
+		model.addAllAttributes(modelMap);// <3>
+		return "customers";// <4>
 	}
+
 }

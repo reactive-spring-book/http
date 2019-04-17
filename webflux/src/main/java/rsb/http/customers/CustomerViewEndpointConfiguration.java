@@ -16,14 +16,14 @@ class CustomerViewEndpointConfiguration {
 	RouterFunction<ServerResponse> customerViews(CustomerRepository repository) {
 
 		return route() //
-			.GET("/fn/customers.php", r -> {
-				var map = Map.of(//
-					"customers", repository.findAll(), //<1>
-					"type", "Functional Reactive" //
-				);
-				return ServerResponse.ok().render("customers", map); //<2>
-			}) //
-			.build();
+				.GET("/fn/customers.php", r -> {
+					var map = Map.of(//
+							"customers", repository.findAll(), // <1>
+							"type", "Functional Reactive" //
+					);
+					return ServerResponse.ok().render("customers", map); // <2>
+				}) //
+				.build();
 	}
 
 }
