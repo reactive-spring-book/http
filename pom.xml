@@ -13,7 +13,6 @@
         <relativePath/>
     </parent>
     <properties>
-
         <java.version>11</java.version>
     </properties>
     <modules>
@@ -21,7 +20,6 @@
         <module>servlets</module>
     </modules>
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
