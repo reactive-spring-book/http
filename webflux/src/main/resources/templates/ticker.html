@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Tick Tock</title>
-    <script data-th-inline="javascript">
-        window.addEventListener('load', function (loadedEvent) {
-            var tickTockBlock = document.getElementById('updateBlock');
-            var es = new EventSource('http://localhost:8080/stream');
-            es.addEventListener('message', function (update) {
-                tickTockBlock.innerHTML = update.data;
-            });
-        })
-    </script>
-</head>
+<head><title>Tick Tock</title></head>
 <body>
-<div id="updateBlock"><h1 data-th-each="update  : ${updates}">[[${update}]]</h1></div>
+
+<!--1-->
+<div id="updateBlock">
+    <!--2-->
+    <h1 data-th-each="update  : ${updates}">
+        [[${update}]]
+    </h1>
+</div>
+
+
+<script src="/ticker.js"></script>
 
 </body>
 </html>

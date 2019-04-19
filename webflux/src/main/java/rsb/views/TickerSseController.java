@@ -11,13 +11,14 @@ import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 @Controller
 class TickerSseController {
 
-	@GetMapping("/ticker")
+	// <1>
+	@GetMapping("/ticker.php")
 	String initialView() {
 		return "ticker";
 	}
 
 	// <2>
-	@GetMapping(produces = TEXT_EVENT_STREAM_VALUE, value = "/stream")
+	@GetMapping(produces = TEXT_EVENT_STREAM_VALUE, value = "/ticker-stream")
 	String streamingUpdates(Model model) {
 		var producer = IntervalMessageProducer.produce();
 		var updates = new ReactiveDataDriverContextVariable(producer, 1); // <3>
