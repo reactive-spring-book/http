@@ -1,20 +1,21 @@
 package rsb.client;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.reactive.function.client.WebClient;
 
+@Log4j2
 @SpringBootApplication
 public class HttpClientApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("server.port", "0");
+
 		SpringApplication.run(HttpClientApplication.class, args);
 	}
 
-	@Bean
-	WebClient webClient(WebClient.Builder builder) {
-		return builder.build(); // todo show how to customize this
+	static void accept(Greeting greeting) {
+		log.info("greeting: " + greeting);
 	}
 
 }
