@@ -17,6 +17,7 @@
     </properties>
     <modules>
         <module>webflux</module>
+        <module>webclient</module>
         <module>servlets</module>
     </modules>
     <dependencies>
