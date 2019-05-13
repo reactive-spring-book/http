@@ -10,6 +10,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunctions;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.function.Consumer;
+
 @Log4j2
 @Configuration
 @Profile("auth")
@@ -45,7 +47,7 @@ class AuthenticatedConfig {
 	public void go() {
 		var client = secureWebClient();
 		client.get().uri("/greet/authenticated").retrieve().bodyToMono(Greeting.class)
-				.subscribe(HttpClientApplication::accept);
+				.subscribe(log::info);
 	}
 
 }
