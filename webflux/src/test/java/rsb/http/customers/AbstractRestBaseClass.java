@@ -66,7 +66,7 @@ public abstract class AbstractRestBaseClass {
 				.exchange() //
 				.expectStatus().isOk() //
 				.expectHeader() //
-				.contentType(MediaType.APPLICATION_JSON_UTF8) //
+				.contentTypeCompatibleWith(MediaType.APPLICATION_JSON) //
 				.returnResult(Customer.class);
 
 		var responseBody = customerFluxExchangeResult.getResponseBody();
@@ -84,7 +84,7 @@ public abstract class AbstractRestBaseClass {
 				.exchange() //
 				.expectStatus().isOk() //
 				.expectHeader() //
-				.contentType(MediaType.APPLICATION_JSON_UTF8) //
+				.contentTypeCompatibleWith(MediaType.APPLICATION_JSON) //
 				.returnResult(Customer.class);
 
 		var responseBody = getCustomerByIdResult.getResponseBody();
