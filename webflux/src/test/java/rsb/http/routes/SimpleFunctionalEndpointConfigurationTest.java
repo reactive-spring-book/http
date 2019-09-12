@@ -23,7 +23,7 @@ public class SimpleFunctionalEndpointConfigurationTest {
 
 	@Test
 	public void hello() {
-		this.doTest("/hello/World", "Hello World!");
+		this.doTest("/hello/world", "Hello world!");
 	}
 
 	@Test
@@ -33,7 +33,8 @@ public class SimpleFunctionalEndpointConfigurationTest {
 
 	private void doTest(String path, String result) {
 
-		this.webTestClient.get() //
+		this.webTestClient //
+				.get() //
 				.uri(path) //
 				.exchange() //
 				.expectBody(String.class).value(str -> Assert.assertEquals(result, str));

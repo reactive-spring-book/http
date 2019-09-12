@@ -23,7 +23,7 @@ class SimpleFunctionalEndpointConfiguration {
 				.GET("/hello/{name}", request -> { // <3>
 					var namePathVariable = request.pathVariable("name");
 					var message = String.format("Hello %s!", namePathVariable);
-					return ok().syncBody(message);
+					return ok().bodyValue(message);
 				}) //
 				.GET("/hodor", handler) // <4>
 				.GET("/sup", handler::handle) // <5>
