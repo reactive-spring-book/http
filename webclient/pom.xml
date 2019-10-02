@@ -11,8 +11,6 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
-
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -37,10 +35,5 @@
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
-     <!--   <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <scope>test</scope>
-        </dependency>-->
     </dependencies>
 </project>
