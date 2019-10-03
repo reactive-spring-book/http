@@ -20,10 +20,13 @@ class AuthenticatedConfig {
 	private final WebClient client;
 
 	AuthenticatedConfig(WebClient.Builder builder, ClientProperties clientProperties) {
+		// <1>
 		var httpProperties = clientProperties.getHttp();
 		var basicAuthProperties = clientProperties.getHttp().getBasic();
+		// <2>
 		var filterFunction = ExchangeFilterFunctions.basicAuthentication(
 				basicAuthProperties.getUsername(), basicAuthProperties.getPassword());
+		// <3>
 		this.client = builder//
 				.baseUrl(httpProperties.getRootUrl())//
 				.filters(filters -> filters.add(filterFunction)) //
@@ -32,7 +35,8 @@ class AuthenticatedConfig {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void readyForAuthenticatedRequest() {
-		this.client.get()//
+		this.client//
+				.get()// <4>
 				.uri("/greet/authenticated")//
 				.retrieve()//
 				.bodyToMono(Greeting.class)//
