@@ -19,12 +19,12 @@ class ClientProperties {
 
 		private Basic basic = new Basic();
 
-		private String rootUrl;
+		private String rootUrl;// <1>
 
 		@Data
 		public static class Basic {
 
-			private String username, password;
+			private String username, password;// <2>
 
 		}
 

@@ -16,6 +16,18 @@ public class HttpServiceApplication {
 		SpringApplication.run(HttpServiceApplication.class, args);
 	}
 
+	// <1>
+	@Bean
+	MapReactiveUserDetailsService authentication() {
+		var jlong = User.withDefaultPasswordEncoder()//
+				.username("jlong")//
+				.roles("USER")//
+				.password("pw")//
+				.build();
+		return new MapReactiveUserDetailsService(jlong);
+	}
+
+	// <2>
 	@Bean
 	SecurityWebFilterChain authorization(ServerHttpSecurity http) {
 		return http//
@@ -26,16 +38,6 @@ public class HttpServiceApplication {
 						.anyExchange().permitAll()//
 				)//
 				.build();
-	}
-
-	@Bean
-	MapReactiveUserDetailsService authentication() {
-		var jlong = User.withDefaultPasswordEncoder()//
-				.username("jlong")//
-				.roles("USER")//
-				.password("pw")//
-				.build();
-		return new MapReactiveUserDetailsService(jlong);
 	}
 
 }

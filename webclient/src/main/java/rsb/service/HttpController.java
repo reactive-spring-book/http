@@ -17,21 +17,24 @@ import java.util.stream.Stream;
 @RestController
 class HttpController {
 
-	@GetMapping("/greet/authenticated")
-	Publisher<Greeting> greetAuthenticated(Authentication authentication) {
-		return Mono.just(greeting(authentication.getName()));
-	}
-
+	// <1>
 	@GetMapping(value = "/greet/single/{name}")
 	Publisher<Greeting> greetSingle(@PathVariable String name) {
 		return Mono.just(greeting(name));
 	}
 
+	// <2>
 	@GetMapping(value = "/greet/many/{name}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	Publisher<Greeting> greetMany(@PathVariable String name) {
 		return Flux //
 				.fromStream(Stream.generate(() -> greeting(name)))
 				.delayElements(Duration.ofSeconds(1));
+	}
+
+	// <3>
+	@GetMapping("/greet/authenticated")
+	Publisher<Greeting> greetAuthenticated(Authentication authentication) {
+		return Mono.just(greeting(authentication.getName()));
 	}
 
 	private Greeting greeting(String name) {

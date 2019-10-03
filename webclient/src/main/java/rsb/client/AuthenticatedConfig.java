@@ -9,10 +9,12 @@ import org.springframework.context.event.EventListener;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunctions;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 @Log4j2
 @Configuration
-@Profile("security")
 class AuthenticatedConfig {
 
 	private final WebClient client;
@@ -29,7 +31,7 @@ class AuthenticatedConfig {
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
-	public void go() {
+	public void readyForAuthenticatedRequest() {
 		this.client.get()//
 				.uri("/greet/authenticated")//
 				.retrieve()//
