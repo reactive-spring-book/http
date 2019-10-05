@@ -19,8 +19,14 @@ public class TomcatWebfluxApplicationTest {
 	@Test
 	public void greet() throws Exception {
 
-		this.client.get().uri("/hello").exchange().expectStatus().isOk().expectHeader()
-				.contentType(MediaType.TEXT_PLAIN_VALUE).expectBody(String.class)
+		this.client//
+				.get()//
+				.uri("/hello")//
+				.exchange()//
+				.expectStatus()//
+				.isOk()//
+				.expectHeader().contentType(MediaType.TEXT_PLAIN_VALUE)//
+				.expectBody(String.class)
 				.value(returnedValue -> Assert.assertEquals(returnedValue, "Hi!"));
 	}
 
