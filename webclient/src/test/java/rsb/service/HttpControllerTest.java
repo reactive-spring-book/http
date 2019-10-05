@@ -13,10 +13,10 @@ import reactor.test.StepVerifier;
 import rsb.client.*;
 
 @SpringBootTest(classes = { AuthenticatedConfiguration.class, DefaultConfiguration.class,
-		ClientProperties.class, HttpServiceApplication.class },//
-	webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,//
-	properties = { "spring.profiles.active=client", "server.port=8080", "spring.main.web-application-type=reactive" }
-	)
+		ClientProperties.class, HttpServiceApplication.class }, //
+		webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, //
+		properties = { "spring.profiles.active=client", "server.port=8080",
+				"spring.main.web-application-type=reactive" })
 @RunWith(SpringRunner.class)
 public class HttpControllerTest {
 
