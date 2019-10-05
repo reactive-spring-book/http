@@ -13,4 +13,5 @@ class TimingExchangeFilterFunction implements ExchangeFilterFunction {
 		return next.exchange(request)
 				.map(currentResponse -> new TimingClientResponseWrapper(currentResponse));// <1>
 	}
+
 }

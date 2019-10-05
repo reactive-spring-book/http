@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @AllArgsConstructor
 @NoArgsConstructor
 @ConfigurationProperties(prefix = "client")
-class ClientProperties {
+public class ClientProperties {
 
 	private Http http = new Http();
 
