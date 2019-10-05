@@ -2,7 +2,6 @@ package rsb.client;
 
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
