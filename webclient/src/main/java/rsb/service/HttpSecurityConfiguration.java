@@ -17,7 +17,7 @@ class HttpSecurityConfiguration {
 		var jlong = User.withDefaultPasswordEncoder()//
 				.username("jlong")//
 				.roles("USER")//
-				.password("pw")//<2>
+				.password("pw")// <2>
 				.build();
 		return new MapReactiveUserDetailsService(jlong);
 	}
@@ -34,4 +34,5 @@ class HttpSecurityConfiguration {
 				)//
 				.build();
 	}
+
 }
