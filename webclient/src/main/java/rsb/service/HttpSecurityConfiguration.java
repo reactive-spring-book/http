@@ -22,7 +22,7 @@ class HttpSecurityConfiguration {
 		return new MapReactiveUserDetailsService(jlong);
 	}
 
-	// <2>
+	// <3>
 	@Bean
 	SecurityWebFilterChain authorization(ServerHttpSecurity http) {
 		return http//
