@@ -13,7 +13,7 @@ public class AuthenticatedClient {
 
 	public Mono<Greeting> getAuthenticatedGreeting() {
 		return this.client//
-				.get()// <4>
+				.get()// <1>
 				.uri("/greet/authenticated")//
 				.retrieve()//
 				.bodyToMono(Greeting.class);//

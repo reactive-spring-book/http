@@ -15,7 +15,7 @@ public class DefaultClient {
 	private final WebClient client;
 
 	public Mono<Greeting> getSingle(String name) {
-		// <2>
+		// <1>
 		return client.get()//
 				.uri("/greet/single/{name}", Map.of("name", name))// "Stéphane Maldini"
 				.retrieve()//
@@ -23,7 +23,7 @@ public class DefaultClient {
 	}
 
 	public Flux<Greeting> getMany(String name) {
-		// <3>
+		// <2>
 		return client.get()//
 				.uri("/greet/many/{name}", Map.of("name", name))// "Madhura Bhave"
 				.retrieve()//
