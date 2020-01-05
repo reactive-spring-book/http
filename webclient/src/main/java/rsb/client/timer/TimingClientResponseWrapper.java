@@ -26,7 +26,7 @@ class TimingClientResponseWrapper extends ClientResponseWrapper {
 		log.info("stop @ " + Instant.now().toString());
 	}
 
-	//<1>
+	// <1>
 	private <T> Mono<T> log(Mono<T> c) {
 		return c.doOnSubscribe(s -> start()).doFinally(s -> stop());
 	}
@@ -35,7 +35,7 @@ class TimingClientResponseWrapper extends ClientResponseWrapper {
 		return c.doOnSubscribe(s -> start()).doFinally(s -> stop());
 	}
 
-	//<2>
+	// <2>
 	@Override
 	public <T> T body(BodyExtractor<T, ? super ClientHttpResponse> extractor) {
 		T body = super.body(extractor);
