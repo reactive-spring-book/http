@@ -41,11 +41,4 @@ public class HttpControllerTest {
 				.expectNextMatches(g -> g.getMessage().contains(msg)).verifyComplete();
 	}
 
-	/*
-	 * @Test public void greetAuthenticated() { Mono<Greeting> authenticatedGreeting =
-	 * this.authenticatedClient.getAuthenticatedGreeting();
-	 * StepVerifier.create(authenticatedGreeting).expectNextMatches(g ->
-	 * g.getMessage().contains("Hello jlong")).verifyComplete(); }
-	 */
-
 }
