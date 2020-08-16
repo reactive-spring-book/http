@@ -20,15 +20,13 @@ public class ClientApplication {
 		SpringApplication.run(ClientApplication.class, args);
 	}
 
-	private final String username = "jlong";
-
-	private final String password = "pw";
-
 	@Bean
 	WebClient webClient(WebClient.Builder builder) {
-		return builder.filter(
-				ExchangeFilterFunctions.basicAuthentication(this.username, this.password))
-				.build();
+		String username = "jlong";
+		String password = "pw";
+		return builder//
+				.filter(ExchangeFilterFunctions.basicAuthentication(username, password))//
+				.build();//
 	}
 
 	@Bean
