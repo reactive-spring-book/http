@@ -33,15 +33,12 @@ public class ClientApplication {
 
 	@Bean
 	ApplicationListener<ApplicationReadyEvent> client(WebClient secureHttpClient) {
-		return event ->
-
-		{
-			ParameterizedTypeReference<Map<String, String>> mapParameterizedTypeReference = new ParameterizedTypeReference<>() {
-			};
-			secureHttpClient.get().uri("http://localhost:8080/greetings").retrieve()
-					.bodyToMono(mapParameterizedTypeReference)
-					.subscribe(map -> log.info("greeting: " + map.get("greetings")));
-		};
+		return event -> secureHttpClient//
+				.get()//
+				.uri("http://localhost:8080/greetings")//
+				.retrieve()//
+				.bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {
+				}).subscribe(map -> log.info("greeting: " + map.get("greetings")));
 
 	}
 
