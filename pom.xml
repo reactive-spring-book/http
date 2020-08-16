@@ -18,6 +18,7 @@
         <module>webflux</module>
         <module>webclient</module>
         <module>servlets</module>
+        <module>security</module>
     </modules>
     <dependencies>
         <dependency>
