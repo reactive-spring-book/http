@@ -13,7 +13,7 @@ import java.util.Map;
 class GreetingController {
 
 	@GetMapping("/greetings")
-	Mono<Map<String, String>> greet(@AuthenticationPrincipal Mono<UserDetails> user) {
+	Mono<Map<String, String>> greet(@AuthenticationPrincipal Mono<UserDetails> user) {// <1>
 		return user//
 				.map(UserDetails::getUsername)//
 				.map(name -> Map.of("greetings",

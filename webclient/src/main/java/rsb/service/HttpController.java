@@ -31,12 +31,6 @@ class HttpController {
 				.delayElements(Duration.ofSeconds(1));
 	}
 
-	// <3>
-	@GetMapping("/greet/authenticated")
-	Publisher<Greeting> greetAuthenticated(Authentication authentication) {
-		return Mono.just(greeting(authentication.getName()));
-	}
-
 	private Greeting greeting(String name) {
 		return new Greeting("Hello " + name + " @ " + Instant.now());
 	}

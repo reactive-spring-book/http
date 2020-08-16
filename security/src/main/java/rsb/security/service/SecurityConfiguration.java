@@ -26,10 +26,10 @@ class SecurityConfiguration {
 	@Bean
 	SecurityWebFilterChain authorization(ServerHttpSecurity http) {
 		return http//
-				.httpBasic(Customizer.withDefaults())//
+				.httpBasic(Customizer.withDefaults())// <3>
 				.authorizeExchange(ae -> ae//
-						.pathMatchers("/greetings").authenticated()//
-						.anyExchange().permitAll()//
+						.pathMatchers("/greetings").authenticated()// <4>
+						.anyExchange().permitAll()// <5>
 				)//
 				.csrf(ServerHttpSecurity.CsrfSpec::disable)//
 				.build();

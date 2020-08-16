@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Log4j2
 @Configuration
-public class AuthenticatedConfiguration {
+class AuthenticatedConfiguration {
 
 	@Bean
 	AuthenticatedClient authenticatedClient(WebClient.Builder builder,

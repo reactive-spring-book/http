@@ -20,15 +20,19 @@ public class ClientApplication {
 		SpringApplication.run(ClientApplication.class, args);
 	}
 
+	// <1>
 	@Bean
 	WebClient webClient(WebClient.Builder builder) {
-		String username = "jlong";
-		String password = "pw";
+		var username = "jlong";
+		var password = "pw";
+		var basicAuthentication = ExchangeFilterFunctions.basicAuthentication(username,
+				password);
 		return builder//
-				.filter(ExchangeFilterFunctions.basicAuthentication(username, password))//
+				.filter(basicAuthentication)// <2>
 				.build();//
 	}
 
+	// <2>
 	@Bean
 	ApplicationListener<ApplicationReadyEvent> client(WebClient secureHttpClient) {
 		return event -> secureHttpClient//
@@ -36,7 +40,8 @@ public class ClientApplication {
 				.uri("http://localhost:8080/greetings")//
 				.retrieve()//
 				.bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {
-				}).subscribe(map -> log.info("greeting: " + map.get("greetings")));
+				})// <3>
+				.subscribe(map -> log.info("greeting: " + map.get("greetings")));
 
 	}
 
