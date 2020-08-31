@@ -27,9 +27,9 @@ class SecurityConfiguration {
 	SecurityWebFilterChain authorization(ServerHttpSecurity http) {
 		return http//
 				.httpBasic(Customizer.withDefaults())// <3>
-				.authorizeExchange(ae -> ae//
-						.pathMatchers("/greetings").authenticated()// <4>
-						.anyExchange().permitAll()// <5>
+				.authorizeExchange(ae -> ae// <4>
+						.pathMatchers("/greetings").authenticated()// <5>
+						.anyExchange().permitAll()// <6>
 				)//
 				.csrf(ServerHttpSecurity.CsrfSpec::disable)//
 				.build();
