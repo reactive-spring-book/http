@@ -20,12 +20,7 @@ class EchoWebsocketConfiguration {
 	// <1>
 	@Bean
 	HandlerMapping echoHm() {
-		return new SimpleUrlHandlerMapping() {
-			{
-				this.setOrder(1);
-				this.setUrlMap(Map.of("/ws/echo", echoWsh()));
-			}
-		};
+		return new SimpleUrlHandlerMapping(Map.of("/ws/echo", echoWsh()), 10);
 	}
 
 	// <2>
