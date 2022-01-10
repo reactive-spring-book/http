@@ -1,6 +1,6 @@
 package rsb.client.timer;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.client.reactive.ClientHttpResponse;
 import org.springframework.web.reactive.function.BodyExtractor;
@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 
-@Log4j2
+@Slf4j
 class TimingClientResponseWrapper extends ClientResponseWrapper {
 
 	TimingClientResponseWrapper(ClientResponse delegate) {

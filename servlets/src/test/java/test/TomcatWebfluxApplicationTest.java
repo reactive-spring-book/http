@@ -14,8 +14,7 @@ public class TomcatWebfluxApplicationTest {
 	private WebTestClient client;
 
 	@Test
-	public void greet() throws Exception {
-
+	public void greet() {
 		this.client//
 				.get()//
 				.uri("/hello")//
