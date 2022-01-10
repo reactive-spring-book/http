@@ -16,8 +16,7 @@ class GreetingController {
 	Mono<Map<String, String>> greet(@AuthenticationPrincipal Mono<UserDetails> user) {// <1>
 		return user//
 				.map(UserDetails::getUsername)//
-				.map(name -> Map.of("greetings",
-						"Hello " + name + " @ " + Instant.now() + "!"));
+				.map(name -> Map.of("greetings", "Hello " + name + " @ " + Instant.now() + "!"));
 	}
 
 }

@@ -3,7 +3,6 @@ package rsb.http.customers;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -34,8 +33,7 @@ class CustomerHandler {
 	Mono<ServerResponse> handleCreateCustomer(ServerRequest request) {
 		return request.bodyToMono(Customer.class) //
 				.flatMap(repository::save) //
-				.flatMap(saved -> created(URI.create("/fn/customers/" + saved.getId()))
-						.build());
+				.flatMap(saved -> created(URI.create("/fn/customers/" + saved.id())).build());
 	}
 
 }

@@ -63,7 +63,7 @@ class ChatWebsocketConfiguration {
 					.receive() //
 					.map(WebSocketMessage::getPayloadAsText) //
 					.map(this::messageFromJson) //
-					.map(msg -> new Message(sessionId, msg.getText(), new Date())) //
+					.map(msg -> new Message(sessionId, msg.text(), new Date())) //
 					.map(this.messages::offer)//
 					.doFinally(st -> { // <7>
 						if (st.equals(SignalType.ON_COMPLETE)) {//
@@ -92,12 +92,7 @@ class ChatWebsocketConfiguration {
 
 	@Bean
 	HandlerMapping chatHm() {
-		return new SimpleUrlHandlerMapping() {
-			{
-				this.setUrlMap(Map.of("/ws/chat", chatWsh()));
-				this.setOrder(2);
-			}
-		};
+		return new SimpleUrlHandlerMapping(Map.of("/ws/chat", chatWsh()), 2);
 	}
 
 }

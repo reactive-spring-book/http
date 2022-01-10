@@ -9,13 +9,7 @@ import java.net.URI;
 
 @RestController // <1>
 @RequestMapping(value = "/rc/customers") // <2>
-class CustomerRestController {
-
-	private final CustomerRepository repository;
-
-	CustomerRestController(CustomerRepository cr) {
-		this.repository = cr;
-	}
+record CustomerRestController(CustomerRepository repository) {
 
 	@GetMapping("/{id}") // <3>
 	Mono<Customer> byId(@PathVariable("id") String id) {
@@ -31,7 +25,7 @@ class CustomerRestController {
 	Mono<ResponseEntity<?>> create(@RequestBody Customer customer) { // <6>
 		return this.repository.save(customer)//
 				.map(customerEntity -> ResponseEntity//
-						.created(URI.create("/rc/customers/" + customerEntity.getId())) //
+						.created(URI.create("/rc/customers/" + customerEntity.id())) //
 						.build());
 	}
 

@@ -15,8 +15,7 @@ class LowercaseWebFilter implements WebFilter {
 	public Mono<Void> filter(ServerWebExchange currentRequest, WebFilterChain chain) {
 
 		// <1>
-		var lowercaseUri = URI
-				.create(currentRequest.getRequest().getURI().toString().toLowerCase());
+		var lowercaseUri = URI.create(currentRequest.getRequest().getURI().toString().toLowerCase());
 
 		var outgoingExchange = currentRequest.mutate() // <2>
 				.request(builder -> builder.uri(lowercaseUri)).build();

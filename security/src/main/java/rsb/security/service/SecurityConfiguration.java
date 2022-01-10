@@ -15,10 +15,9 @@ class SecurityConfiguration {
 	// <1>
 	@Bean
 	MapReactiveUserDetailsService authentication() {
-		UserDetails jlong = User.withDefaultPasswordEncoder().username("jlong")
-				.password("pw").roles("USER").build();
-		UserDetails rwinch = User.withDefaultPasswordEncoder().username("rwinch")
-				.password("pw").roles("USER", "ADMIN").build();
+		UserDetails jlong = User.withDefaultPasswordEncoder().username("jlong").password("pw").roles("USER").build();
+		UserDetails rwinch = User.withDefaultPasswordEncoder().username("rwinch").password("pw").roles("USER", "ADMIN")
+				.build();
 		return new MapReactiveUserDetailsService(jlong, rwinch);
 	}
 

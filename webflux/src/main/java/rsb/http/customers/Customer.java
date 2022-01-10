@@ -1,7 +1,6 @@
 package rsb.http.customers;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+/*
 
 @Data
 @NoArgsConstructor
@@ -18,4 +17,8 @@ class Customer {
 		this.name = name;
 	}
 
+}
+*/
+
+record Customer(String id, String name) {
 }

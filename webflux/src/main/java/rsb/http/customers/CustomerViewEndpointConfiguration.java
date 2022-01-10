@@ -14,7 +14,6 @@ class CustomerViewEndpointConfiguration {
 
 	@Bean
 	RouterFunction<ServerResponse> customerViews(CustomerRepository repository) {
-
 		return route() //
 				.GET("/fn/customers.php", r -> {
 					var map = Map.of(//

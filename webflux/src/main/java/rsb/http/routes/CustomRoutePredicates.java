@@ -22,8 +22,7 @@ import static rsb.http.routes.CaseInsensitiveRequestPredicate.i;
 class CustomRoutePredicates {
 
 	private final HandlerFunction<ServerResponse> handler = //
-			request -> ok().syncBody(
-					"Hello, " + request.queryParam("name").orElse("world") + "!");
+			request -> ok().bodyValue("Hello, " + request.queryParam("name").orElse("world") + "!");
 
 	@Bean
 	RouterFunction<ServerResponse> customRequestPredicates() {
@@ -40,7 +39,7 @@ class CustomRoutePredicates {
 				.build();
 	}
 
-	boolean isRequestForAValidUid(ServerRequest request) {
+	private boolean isRequestForAValidUid(ServerRequest request) {
 		var goodUids = Set.of("1", "2", "3");
 		return request //
 				.queryParam("uid") //

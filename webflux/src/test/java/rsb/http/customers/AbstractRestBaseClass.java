@@ -1,22 +1,21 @@
 package rsb.http.customers;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.FluxExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -30,12 +29,12 @@ public abstract class AbstractRestBaseClass {
 	@MockBean
 	private CustomerRepository customerRepository;
 
-	private final Collection<Customer> results = Arrays.asList(new Customer("1", "A"),
-			new Customer("2", "B"), new Customer("3", "C"), new Customer("4", "D"));
+	private final Collection<Customer> results = List.of(new Customer("1", "A"), new Customer("2", "B"), //
+			new Customer("3", "C"), new Customer("4", "D"));
 
 	private final AtomicReference<Customer> saved = new AtomicReference<>();
 
-	@Before
+	@BeforeEach
 	public void before() {
 
 		var iterable = Flux.fromIterable(this.results);
@@ -51,9 +50,9 @@ public abstract class AbstractRestBaseClass {
 		Mockito //
 				.when(this.customerRepository.save(Mockito.any()))//
 				.then(invocation -> {
-					Customer customer = Customer.class.cast(invocation.getArguments()[0]);
+					Customer customer = (Customer) invocation.getArguments()[0];
 					String uid = UUID.randomUUID().toString();
-					this.saved.set(new Customer(uid, customer.getName()));
+					this.saved.set(new Customer(uid, customer.name()));
 					return Mono.just(this.saved.get());
 				});
 	}
@@ -91,8 +90,7 @@ public abstract class AbstractRestBaseClass {
 
 		StepVerifier //
 				.create(responseBody) //
-				.expectNextMatches(customer -> customer.getName().equalsIgnoreCase("A"))
-				.verifyComplete();
+				.expectNextMatches(customer -> customer.name().equalsIgnoreCase("A")).verifyComplete();
 	}
 
 	@Test
@@ -100,12 +98,12 @@ public abstract class AbstractRestBaseClass {
 		var krusty = "Krusty";
 		this.client.post() //
 				.uri(rootUrl() + "/customers") //
-				.contentType(MediaType.APPLICATION_JSON_UTF8) //
-				.body(BodyInserters.fromObject(new Customer(krusty))) //
+				.contentType(MediaType.APPLICATION_JSON) //
+				.body(BodyInserters.fromValue(new Customer(UUID.randomUUID().toString(), krusty))) //
 				.exchange() //
 				.expectHeader().exists(HttpHeaders.LOCATION) //
 				.expectStatus().isCreated();
-		Assert.assertTrue(this.saved.get().getName().equalsIgnoreCase(krusty));
+		Assertions.assertTrue(this.saved.get().name().equalsIgnoreCase(krusty));
 	}
 
 }

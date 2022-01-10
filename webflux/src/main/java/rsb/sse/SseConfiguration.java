@@ -27,8 +27,7 @@ class SseConfiguration {
 
 	Mono<ServerResponse> handleSse(ServerRequest r) {
 		var countPathVariable = Integer.parseInt(r.pathVariable(this.countPathVariable));
-		var publisher = IntervalMessageProducer.produce(countPathVariable)
-				.doOnComplete(() -> log.info("completed"));
+		var publisher = IntervalMessageProducer.produce(countPathVariable).doOnComplete(() -> log.info("completed"));
 
 		return ServerResponse //
 				.ok() //

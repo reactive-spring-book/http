@@ -2,7 +2,6 @@ package rsb.service;
 
 import org.reactivestreams.Publisher;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +26,7 @@ class HttpController {
 	@GetMapping(value = "/greet/many/{name}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	Publisher<Greeting> greetMany(@PathVariable String name) {
 		return Flux //
-				.fromStream(Stream.generate(() -> greeting(name)))
-				.delayElements(Duration.ofSeconds(1));
+				.fromStream(Stream.generate(() -> greeting(name))).delayElements(Duration.ofSeconds(1));
 	}
 
 	private Greeting greeting(String name) {

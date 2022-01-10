@@ -1,16 +1,12 @@
 package rsb.http.routes;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
-@RunWith(SpringRunner.class)
 @WebFluxTest({ CustomRoutePredicates.class })
 public class CustomRoutePredicatesTest {
 
@@ -18,8 +14,7 @@ public class CustomRoutePredicatesTest {
 	private WebTestClient webTestClient;
 
 	@Test
-	public void caseInsensitiveRequestMatching() throws Exception {
-
+	public void caseInsensitiveRequestMatching() {
 		var uppercaseUri = "/GREETINGS/World";
 		var lowercaseUri = "/greetings/World";
 		var expectedString = "Hello, World!";

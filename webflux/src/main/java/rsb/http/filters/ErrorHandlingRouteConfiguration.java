@@ -1,6 +1,6 @@
 package rsb.http.filters;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,22 +30,16 @@ class ErrorHandlingRouteConfiguration {
 					}
 				}) //
 				.filter((request, next) -> next.handle(request) // <1>
-						.onErrorResume(ProductNotFoundException.class,
-								pnfe -> notFound().build())) // <2>
+						.onErrorResume(ProductNotFoundException.class, pnfe -> notFound().build())) // <2>
 				.build();
 	}
 
 }
 
-@Data
-@RequiredArgsConstructor
-class Product {
-
-	private final String id;
-
+record Product(String id) {
 }
 
-@Data
+@Getter
 @RequiredArgsConstructor
 class ProductNotFoundException extends RuntimeException {
 

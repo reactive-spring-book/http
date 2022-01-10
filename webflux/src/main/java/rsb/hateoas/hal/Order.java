@@ -1,10 +1,7 @@
 package rsb.hateoas.hal;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
 import java.util.Date;
+/*
 
 @RequiredArgsConstructor
 @Data
@@ -20,4 +17,8 @@ class Order implements Comparable<Order> {
 		return this.id.compareTo(o.id);
 	}
 
+}
+*/
+
+record Order(String id, Date when) {
 }

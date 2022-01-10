@@ -1,19 +1,15 @@
 package rsb.sse;
 
-import lombok.extern.log4j.Log4j2;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.test.StepVerifier;
 
-@Log4j2
+@Slf4j
 @WebFluxTest({ SseConfiguration.class })
-// @Import({CustomerRepository.class,SseConfiguration.class})
-@RunWith(SpringRunner.class)
 public class SseConfigurationTest {
 
 	@Autowired
@@ -29,8 +25,7 @@ public class SseConfigurationTest {
 								.uri("/sse/2") //
 								.exchange() //
 								.expectStatus().isOk() //
-								.expectHeader()
-								.contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM) //
+								.expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM) //
 								.returnResult(String.class) //
 								.getResponseBody()//
 				) //

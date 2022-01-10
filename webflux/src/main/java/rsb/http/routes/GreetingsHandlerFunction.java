@@ -13,7 +13,7 @@ class GreetingsHandlerFunction implements HandlerFunction<ServerResponse> {
 
 	@Override
 	public Mono<ServerResponse> handle(ServerRequest request) {
-		return ok().syncBody("Hodor!");
+		return ok().bodyValue("Hodor!");
 	}
 
 }

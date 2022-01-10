@@ -1,4 +1,4 @@
-# http
+# HTTP
  - An intro to HTTP as a protocol 
  - reactive in the world of HTTP (how do u get backpressure?) 
  - MVC-style controllers (`CustomerRestController`)

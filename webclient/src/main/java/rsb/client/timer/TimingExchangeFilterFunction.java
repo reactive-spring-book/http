@@ -10,8 +10,7 @@ class TimingExchangeFilterFunction implements ExchangeFilterFunction {
 
 	@Override
 	public Mono<ClientResponse> filter(ClientRequest request, ExchangeFunction next) {
-		return next.exchange(request)
-				.map(currentResponse -> new TimingClientResponseWrapper(currentResponse));// <1>
+		return next.exchange(request).map(currentResponse -> new TimingClientResponseWrapper(currentResponse));// <1>
 	}
 
 }

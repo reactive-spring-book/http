@@ -2,13 +2,11 @@ package rsb.ws.chat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
 import reactor.core.publisher.Flux;
@@ -20,9 +18,8 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = { HttpApplication.class, ChatWebsocketConfiguration.class,
-		WebsocketConfiguration.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = { HttpApplication.class, ChatWebsocketConfiguration.class, WebsocketConfiguration.class },
+		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ChatWebsocketConfigurationTest {
 
 	@LocalServerPort
@@ -73,11 +70,11 @@ public class ChatWebsocketConfigurationTest {
 				.expectComplete() //
 				.verify(Duration.ofSeconds(20));
 
-		Assert.assertEquals(lists.size(), 1);
+		Assertions.assertEquals(lists.size(), 1);
 		var next = lists.iterator().next();
-		Assert.assertNotNull(next.getWhen());
-		Assert.assertNotNull(next.getClientId());
-		Assert.assertEquals(next.getText(), message.getText());
+		Assertions.assertNotNull(next.when());
+		Assertions.assertNotNull(next.clientId());
+		Assertions.assertEquals(next.text(), message.text());
 
 	}
 

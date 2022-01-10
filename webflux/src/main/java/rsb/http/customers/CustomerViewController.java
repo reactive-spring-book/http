@@ -7,13 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.Map;
 
 @Controller
-class CustomerViewController {
-
-	private final CustomerRepository repository;
-
-	CustomerViewController(CustomerRepository repository) {
-		this.repository = repository;
-	}
+record CustomerViewController(CustomerRepository repository) {
 
 	@GetMapping("/c/customers.php")
 	String customersView(Model model) {// <1>

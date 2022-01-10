@@ -1,16 +1,13 @@
 package test;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @WebFluxTest
-@RunWith(SpringRunner.class)
 public class TomcatWebfluxApplicationTest {
 
 	@Autowired
@@ -26,8 +23,7 @@ public class TomcatWebfluxApplicationTest {
 				.expectStatus()//
 				.isOk()//
 				.expectHeader().contentType(MediaType.TEXT_PLAIN_VALUE)//
-				.expectBody(String.class)
-				.value(returnedValue -> Assert.assertEquals(returnedValue, "Hi!"));
+				.expectBody(String.class).value(returnedValue -> Assertions.assertEquals(returnedValue, "Hi!"));
 	}
 
 }

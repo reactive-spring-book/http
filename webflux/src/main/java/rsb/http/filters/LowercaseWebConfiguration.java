@@ -45,8 +45,7 @@ class LowercaseWebConfiguration {
 	}
 
 	Mono<ServerResponse> handle(ServerRequest serverRequest) {
-		return ok().syncBody(
-				String.format("Hello, %s!", serverRequest.pathVariable("name")));
+		return ok().bodyValue(String.format("Hello, %s!", serverRequest.pathVariable("name")));
 	}
 
 }

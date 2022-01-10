@@ -1,7 +1,7 @@
 package rsb.utils;
 
-import lombok.Data;
 import reactor.core.publisher.Flux;
+
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -12,7 +12,7 @@ public abstract class IntervalMessageProducer {
 	}
 
 	public static Flux<String> produce() {
-		return doProduceCountAndStrings().map(CountAndString::getMessage);
+		return doProduceCountAndStrings().map(CountAndString::message);
 	}
 
 	private static Flux<CountAndString> doProduceCountAndStrings() {
@@ -24,16 +24,9 @@ public abstract class IntervalMessageProducer {
 
 }
 
-@Data
-class CountAndString {
+record CountAndString(String message, long count) {
 
-	private final String message;
-
-	private final long count;
-
-	CountAndString(long c) {
-		this.count = c;
-		this.message = "# " + this.count;
+	CountAndString(long count) {
+		this("# " + count, count);
 	}
-
 }

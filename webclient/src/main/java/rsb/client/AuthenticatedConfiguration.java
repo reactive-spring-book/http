@@ -11,14 +11,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 class AuthenticatedConfiguration {
 
 	@Bean
-	AuthenticatedClient authenticatedClient(WebClient.Builder builder,
-			ClientProperties clientProperties) {
+	AuthenticatedClient authenticatedClient(WebClient.Builder builder, ClientProperties clientProperties) {
 		// <1>
 		var httpProperties = clientProperties.getHttp();
 		var basicAuthProperties = clientProperties.getHttp().getBasic();
 		// <2>
-		var filterFunction = ExchangeFilterFunctions.basicAuthentication(
-				basicAuthProperties.getUsername(), basicAuthProperties.getPassword());
+		var filterFunction = ExchangeFilterFunctions.basicAuthentication(basicAuthProperties.getUsername(),
+				basicAuthProperties.getPassword());
 		// <3>
 		WebClient client = builder//
 				.baseUrl(httpProperties.getRootUrl())//

@@ -32,8 +32,7 @@ class EchoWebsocketConfiguration {
 					.produce() //
 					.doOnNext(log::info) //
 					.map(session::textMessage) // <4>
-					.doFinally(
-							signalType -> log.info("outbound connection: " + signalType)); // <5>
+					.doFinally(signalType -> log.info("outbound connection: " + signalType)); // <5>
 
 			Flux<String> in = session //
 					.receive() //

@@ -1,6 +1,6 @@
 package rsb.security.client;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -12,11 +12,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Map;
 
-@Log4j2
+@Slf4j
 @SpringBootApplication
 public class ClientApplication {
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		SpringApplication.run(ClientApplication.class, args);
 	}
 
@@ -25,8 +25,7 @@ public class ClientApplication {
 	WebClient webClient(WebClient.Builder builder) {
 		var username = "jlong";
 		var password = "pw";
-		var basicAuthentication = ExchangeFilterFunctions.basicAuthentication(username,
-				password);
+		var basicAuthentication = ExchangeFilterFunctions.basicAuthentication(username, password);
 		return builder//
 				.filter(basicAuthentication)// <2>
 				.build();//

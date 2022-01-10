@@ -1,6 +1,5 @@
 package rsb.http.customers;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,7 +19,7 @@ public class CustomerRepository {
 
 	Mono<Customer> save(Customer customer) {
 		var uuid = UUID.randomUUID().toString();
-		this.data.put(uuid, new Customer(uuid, customer.getName()));
+		this.data.put(uuid, new Customer(uuid, customer.name()));
 		return Mono.just(this.data.get(uuid));
 	}
 

@@ -11,9 +11,6 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath/>
     </parent>
-    <properties>
-        <java.version>11</java.version>
-    </properties>
     <modules>
         <module>webflux</module>
         <module>webclient</module>
@@ -27,57 +24,17 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
             <optional>true</optional>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jfrog.buildinfo</groupId>
-                <artifactId>artifactory-maven-plugin</artifactId>
-                <version>${artifactory-maven-plugin.version}</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>build-info</id>
-                        <goals>
-                            <goal>publish</goal>
-                        </goals>
-                        <configuration>
-                            <deployProperties>
-                                <build.vcsRevision>{{TRAVIS_COMMIT}}
-                                </build.vcsRevision>
-                            </deployProperties>
-                            <publisher>
-                                <contextUrl>
-                        https://cloudnativejava.jfrog.io/cloudnativejava/
-                                </contextUrl>
-                                <username>${env.ARTIFACTORY_USERNAME}</username>
-                                <password>${env.ARTIFACTORY_PASSWORD}</password>
-                                <repoKey>libs-release-local</repoKey>
-                                <snapshotRepoKey>libs-snapshot-local
-                                </snapshotRepoKey>
-                            </publisher>
-                            <buildInfo>
-                                <agentName>Travis CI</agentName>
-                                <buildNumber>{{TRAVIS_BUILD_NUMBER}}
-                                </buildNumber>
-                                <buildUrl>
-                                    http://travis-ci.org/{{TRAVIS_REPO_SLUG}}/builds/{{TRAVIS_BUILD_ID}}
-                                </buildUrl>
-                                <principal>{{USER}}</principal>
-                                <vcsRevision>{{TRAVIS_COMMIT}}</vcsRevision>
-                            </buildInfo>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-        </plugins>
-    </build>
     <repositories>
         <repository>
             <snapshots>
@@ -106,7 +63,7 @@
             <id>central</id>
             <name>plugins-release</name>
             <url>
-        https://cloudnativejava.jfrog.io/cloudnativejava/plugins-release
+                https://cloudnativejava.jfrog.io/cloudnativejava/plugins-release
             </url>
         </pluginRepository>
         <pluginRepository>
