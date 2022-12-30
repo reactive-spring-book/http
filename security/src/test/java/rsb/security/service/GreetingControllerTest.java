@@ -25,11 +25,10 @@ public class GreetingControllerTest {
 		var pw = "pw";
 		var exchangeFilterFunction = ExchangeFilterFunctions.basicAuthentication(user, pw);
 		var webClient = WebClient.builder().filter(exchangeFilterFunction).build();
-		Mono<Map<String, String>> mapMono = webClient.get().uri("http://localhost:" + port + "/greetings").retrieve()
+		var mapMono = webClient.get().uri("http://localhost:" + port + "/greetings").retrieve()
 				.bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {
 				});
 		StepVerifier.create(mapMono).expectNextMatches(mp -> mp.get("greetings").contains("jlong")).verifyComplete();
-
 	}
 
 }
