@@ -15,9 +15,15 @@ public class TomcatWebfluxApplicationTest {
 	@Autowired
 	private WebTestClient client;
 
-	private final String name = "Kimly";
+	@Test
+	void controller() {
+		var name = "Kimly";
+		doTest(this.client, "controller", name);
+		doTest(this.client, "functional", name);
+	}
 
-	private static void test(WebTestClient client, String from, String name) {
+	private static void doTest(WebTestClient client, String from, String name) {
+
 		client//
 				.get()//
 				.uri("/hello/" + from + "/{name}", name)//
@@ -29,12 +35,6 @@ public class TomcatWebfluxApplicationTest {
 				.expectBody(Greetings.class) //
 				.value(returnedValue -> Assertions.assertEquals(returnedValue.message(),
 						"Hello, " + name + " from " + from + "!"));
-	}
-
-	@Test
-	void controller() {
-		test(this.client, "controller", this.name);
-		test(this.client, "functional", this.name);
 	}
 
 }
