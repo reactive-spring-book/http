@@ -18,12 +18,11 @@ public class TomcatWebfluxApplicationTest {
 	@Test
 	void controller() {
 		var name = "Kimly";
-		doTest(this.client, "controller", name);
-		doTest(this.client, "functional", name);
+		doTest("controller", name);
+		doTest("functional", name);
 	}
 
-	private static void doTest(WebTestClient client, String from, String name) {
-
+	private void doTest(String from, String name) {
 		client//
 				.get()//
 				.uri("/hello/" + from + "/{name}", name)//
