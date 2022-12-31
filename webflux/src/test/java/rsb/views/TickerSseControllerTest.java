@@ -8,8 +8,8 @@ import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.MediaType;
 import org.springframework.util.FileCopyUtils;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringWebFluxTemplateEngine;
-import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
+import org.thymeleaf.spring6.SpringWebFluxTemplateEngine;
+import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -17,7 +17,6 @@ import rsb.utils.IntervalMessageProducer;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 
@@ -70,7 +69,7 @@ public class TickerSseControllerTest {
 	}
 
 	private String bufferAsString(DataBuffer dataBuffer) {
-		try (var is = dataBuffer.asInputStream(); Reader ir = new InputStreamReader(is)) {
+		try (var is = dataBuffer.asInputStream(); var ir = new InputStreamReader(is)) {
 			return FileCopyUtils.copyToString(ir);
 		} //
 		catch (IOException e) {

@@ -3,7 +3,7 @@ package rsb.views;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
+import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 import static rsb.utils.IntervalMessageProducer.produce;

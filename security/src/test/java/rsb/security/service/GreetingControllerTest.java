@@ -2,11 +2,10 @@ package rsb.security.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunctions;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Map;
@@ -25,11 +24,10 @@ public class GreetingControllerTest {
 		var pw = "pw";
 		var exchangeFilterFunction = ExchangeFilterFunctions.basicAuthentication(user, pw);
 		var webClient = WebClient.builder().filter(exchangeFilterFunction).build();
-		Mono<Map<String, String>> mapMono = webClient.get().uri("http://localhost:" + port + "/greetings").retrieve()
+		var mapMono = webClient.get().uri("http://localhost:" + port + "/greetings").retrieve()
 				.bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {
 				});
 		StepVerifier.create(mapMono).expectNextMatches(mp -> mp.get("greetings").contains("jlong")).verifyComplete();
-
 	}
 
 }
